@@ -238,8 +238,13 @@ JSON 배열만 출력. 코드 블록 없이.
 """
 
 
+CHUNK_SIZE = 10
+CHUNK_WORKERS = 7
+
+
 def analyze_with_claude(by_category):
-    print("[2/4] Claude 분석...", flush=True)
+    """청크 기반 병렬 분석 — 분량 제한 없이 모든 기사 처리."""
+    print("[2/4] Claude 분석 (청크 병렬)...", flush=True)
     flat, article_index = [], []
     for cat, articles in by_category.items():
         for a in articles:
@@ -247,20 +252,39 @@ def analyze_with_claude(by_category):
                          "matched_keyword": a["matched_keyword"], "description": a["description"]})
             article_index.append((cat, a))
     if not flat: return {cat: [] for cat in by_category}
-    if len(flat) > MAX_TOTAL_ARTICLES:
-        flat = flat[:MAX_TOTAL_ARTICLES]
-        article_index = article_index[:MAX_TOTAL_ARTICLES]
+
+    chunks = [flat[i:i + CHUNK_SIZE] for i in range(0, len(flat), CHUNK_SIZE)]
     client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-    prompt = ANALYSIS_PROMPT.format(articles_json=json.dumps(flat, ensure_ascii=False, indent=2))
-    resp = client.messages.create(model=MODEL, max_tokens=8000, messages=[{"role": "user", "content": prompt}])
-    text = resp.content[0].text.strip()
-    if text.startswith("```"):
-        text = re.sub(r"^```[a-zA-Z]*\n", "", text)
-        text = re.sub(r"\n```$", "", text)
-    try: analyses = json.loads(text)
-    except json.JSONDecodeError: analyses = []
-    abi = {a.get("id"): a for a in analyses if isinstance(a, dict)}
-    return _merge_analyses(by_category, article_index, abi)
+
+    def analyze_chunk(chunk):
+        prompt = ANALYSIS_PROMPT.format(articles_json=json.dumps(chunk, ensure_ascii=False, indent=2))
+        try:
+            resp = client.messages.create(
+                model=MODEL, max_tokens=4000,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            text = resp.content[0].text.strip()
+            if text.startswith("```"):
+                text = re.sub(r"^```[a-zA-Z]*\n", "", text)
+                text = re.sub(r"\n```$", "", text)
+            return json.loads(text)
+        except Exception as e:
+            print(f"   ! 청크 분석 오류: {e}", flush=True)
+            return []
+
+    all_analyses = {}
+    with ThreadPoolExecutor(max_workers=CHUNK_WORKERS) as ex:
+        futures = {ex.submit(analyze_chunk, c): i for i, c in enumerate(chunks)}
+        for f in as_completed(futures):
+            cid = futures[f]
+            items = f.result()
+            print(f"   ✓ 청크 {cid}: {len(items)}건", flush=True)
+            for it in items:
+                if isinstance(it, dict) and "id" in it:
+                    all_analyses[it["id"]] = it
+
+    print(f"   → 총 {len(all_analyses)}건 분석 완료 (전체 {len(flat)})", flush=True)
+    return _merge_analyses(by_category, article_index, all_analyses)
 
 
 CATEGORY_TYPE = {
