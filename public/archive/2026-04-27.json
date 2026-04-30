@@ -1,0 +1,152 @@
+{
+  "date": "2026-04-27",
+  "generated_at": "2026-04-29T09:00:03",
+  "articles": {
+    "경쟁사 동향 - 사무/B2B": [],
+    "경쟁사 동향 - 가정/리빙": [],
+    "일하는 방식·워크 트렌드": [],
+    "홈리빙·소비자 트렌드": [],
+    "제조·원자재 환경": [],
+    "글로벌 시그널": [],
+    "인구·세대 변화": [],
+    "AI·자동화와 일의 변화": [],
+    "물류 - 가구 라스트마일·설치": [
+      {
+        "title": "서울, 초고령사회 진입…'시니어주택' 1만2천 가구 공급",
+        "link": "https://news.google.com/rss/articles/CBMiU0FVX3lxTFBMYzZPeS1KUmVHaDZMV1E1NG42ZHFfUnJHREFvemhVOVNnZDQtX2dXejlTazF3ZGVhcG9qYW43cVJYSkZnZVI5Z21wWGxWWXRSenRR?oc=5",
+        "pub_date": "Mon, 27 Apr 2026 12:04:00 GMT",
+        "source": "네이트",
+        "description": "서울, 초고령사회 진입…'시니어주택' 1만2천 가구 공급 &nbsp;&nbsp; 네이트",
+        "matched_keyword": "가구 약속배송",
+        "category": "물류 - 가구 라스트마일·설치",
+        "importance": "중",
+        "summary": "서울이 초고령사회에 진입하면서 시니어주택 1만2천 가구 공급 계획이 나왔습니다. 고령층을 위한 주거공간 증가는 안전성, 접근성, 편의성을 고려한 가구와 인테리어 수요 급증을 의미합니다. 배송·시공 역량도 함께 필요해지는 시장입니다.",
+        "insight": "시니어 주택이 대량 공급되면, 일반 가구랑 다르게 안전손잡이, 낮은 높이, 넘어지지 않는 설계 같은 특화 수요가 터질 텐데요. 이미 준비하고 있는 브랜드들의 움직임이 궁금해집니다.",
+        "brands": [
+          "일룸",
+          "알로소",
+          "슬로우베드",
+          "레터스"
+        ],
+        "type": "external"
+      }
+    ],
+    "물류 - 이커머스 물류 재편": [
+      {
+        "title": "“물류센터 사고, VR로 겪고 막는다”... 쿠팡풀필먼트서비스, 실전 안전교육 실시",
+        "link": "https://news.google.com/rss/articles/CBMibkFVX3lxTE81cGhNUUFWNWZmTUkyZ0RjQjNoTVo5eXE0NEFtTkpyY2JEMUlhSnh0SVAzY0h6YUttTEpjMGdvU2c4U3JjdFFaTVJwcHQxMDRsVFpfbUZweTBPNzAzYWR3OTlwaXNzYUtzalhUaVdn?oc=5",
+        "pub_date": "Mon, 27 Apr 2026 09:24:00 GMT",
+        "source": "보안뉴스",
+        "description": "“물류센터 사고, VR로 겪고 막는다”... 쿠팡풀필먼트서비스, 실전 안전교육 실시 &nbsp;&nbsp; 보안뉴스",
+        "matched_keyword": "쿠팡 풀필먼트",
+        "category": "물류 - 이커머스 물류 재편",
+        "importance": "중",
+        "summary": "쿠팡이 물류센터 안전사고 방지를 위해 VR 교육을 도입했습니다. 위험 상황을 미리 경험하게 하는 방식으로 실제 사고를 예방하는 접근입니다. 대규모 물류 운영사들이 안전에 기술 투자를 늘리는 추세입니다.",
+        "insight": "가구 배송·설치 과정도 안전사고가 중요한데, 우리 레터스·바로스도 이런 새로운 안전교육 방식을 벤치마킹해볼 만하네요.",
+        "brands": [
+          "레터스"
+        ],
+        "type": "external"
+      }
+    ],
+    "물류 - 자동화·로봇·창고": [
+      {
+        "title": "클로봇, '경북 물류·이송 AI+로봇 플래그십' 실증 완료",
+        "link": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5SdGNyWHdNQ3A1TGdIOHdzMFlKQ21DaUpXREdvYi05c3ZuWHhwSDhPTGxGLVdEXzNCQ1ZYYjl3QkdjdWRiU3BBY1dCN0tRSE5TRmtsOFRIYWpscFd5NzVyQ9IBeEFVX3lxTE1Ra1JJMWw0alpEeVQ4X3VIaEtRd3l6eGhIUjRXWDhjcVJzNllXTkJLNF9zcmJlWlBuMHV6aTB4dFItY1k3c1kzMW9iNkp1WE1EWThYa0tlYmxqYmJrOUFZSk1TYWpxWkNHTEZJNkV6d05CWDIyVXl2SQ?oc=5",
+        "pub_date": "Mon, 27 Apr 2026 23:43:06 GMT",
+        "source": "뉴시스",
+        "description": "클로봇, '경북 물류·이송 AI+로봇 플래그십' 실증 완료 &nbsp;&nbsp; 뉴시스",
+        "matched_keyword": "물류 로봇",
+        "category": "물류 - 자동화·로봇·창고",
+        "importance": "상",
+        "summary": "클로봇이 물류 이송 로봇에 AI를 결합한 플래그십 시스템 실증을 완료했습니다. 이는 로봇이 단순히 옮기는 것 넘어 주변을 인식하고 스스로 판단하며 움직일 수 있다는 뜻입니다. 상용화 단계에 들어섰다고 회사가 발표했습니다.",
+        "insight": "물류 자동화가 이제 단순 반복 작업 수준을 넘어 '생각하는 로봇' 시대로 진입하고 있네요. 우리 물류 센터들도 이런 기술과 어떻게 어울릴지 한번 상상해볼 만합니다.",
+        "brands": [
+          "레터스"
+        ],
+        "type": "external"
+      },
+      {
+        "title": "[생활물류 혁신] 롯데글로벌로지스, AX·DX 발판으로 '스마트 물류' 가속",
+        "link": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBIakdEUFB2UTFneU9xcnFSQ0hMQnAxUFVfWGJaZEJzZWc2bzd5STctd0UydEpGSUdVYTRDcXJ3c091SFpnUkdSQVNoZFJHUQ?oc=5",
+        "pub_date": "Mon, 27 Apr 2026 07:19:00 GMT",
+        "source": "전자신문",
+        "description": "[생활물류 혁신] 롯데글로벌로지스, AX·DX 발판으로 '스마트 물류' 가속 &nbsp;&nbsp; 전자신문",
+        "matched_keyword": "스마트 물류센터",
+        "category": "물류 - 자동화·로봇·창고",
+        "importance": "중",
+        "summary": "롯데글로벌로지스가 AI(AX)와 데이터(DX)를 바탕으로 물류센터를 스마트화하고 있습니다. 센터 운영 효율, 배송 시간, 고객 만족도 개선을 동시에 추구하는 방식입니다. 대형 물류 회사들의 '똑똑한 물류' 경쟁이 가열되고 있습니다.",
+        "insight": "큰 물류사들이 AI로 능력을 강화하는 와중에, 우리 같은 중견 3PL 기업은 어떤 틈새나 차별점으로 고객을 붙잡을지 한번 생각해봐야겠네요.",
+        "brands": [
+          "레터스"
+        ],
+        "type": "external"
+      }
+    ],
+    "자사 브랜드 소식": [
+      {
+        "title": "\"침대 위에서 공연·요가·영화\"…일룸, 성수에 '모션베드 체험' 팝업",
+        "link": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFBMRFZpT0JoNGd1eE95Qno3V2pJQU1GMUdRN08xa0stNGlDN2VQby1jRWlfTC1aenZ0c1FkcDE5X2hxeElYN2otbDZjczVpdWRUdl9IY1h1Vzh4S1lG?oc=5",
+        "pub_date": "Mon, 27 Apr 2026 05:50:04 GMT",
+        "source": "뉴스1",
+        "description": "\"침대 위에서 공연·요가·영화\"…일룸, 성수에 '모션베드 체험' 팝업 &nbsp;&nbsp; 뉴스1",
+        "matched_keyword": "일룸 팝업",
+        "category": "자사 브랜드 소식",
+        "importance": "중",
+        "summary": "일룸이 성수에서 모션베드 팝업스토어 '더 모션 클럽'을 운영 중입니다. 침대 위에서 공연, 요가, 영화 감상 같은 경험을 직접 해보게 하는 체험 마케팅입니다. 단순 제품 판매를 넘어 라이프스타일 제안으로 포지셔닝하고 있습니다.",
+        "insight": "요즘 고객들이 제품 스펙보다는 '그거 사면 내 삶이 어떻게 달라질까'를 먼저 궁금해하는데, 일룸이 그걸 팝업으로 직접 보여주는 방식이 꽤 영리네요.",
+        "brands": [
+          "일룸",
+          "슬로우베드"
+        ],
+        "type": "internal"
+      },
+      {
+        "title": "“장시간 플레잉 전방면 뒷받침”···시디즈, 게이밍의자 ‘GX’ 출시",
+        "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE1zaVJhQ1NRNTU2SDRyUExaVElDVWd0ZFJkdzUwZ2dHRlplaEZFWW95UWdFX3c2T1pyLU9UM2k5YWVWY3B4NEY5dU5NdlpaYlRzZnVkcHZvM1NKTnpVSjluN1M4SFg4YlRCX3FjV1JBOGZLeHNL0gF0QVVfeXFMTXNpUmFDU1E1NTZINHJQTFpUSUNVZ3RkUmR3NTBnZ0dGWmVoRkVZb3lRZ0VfdzZPWnItT1QzaTlhZVZjcHg0Rjl1Tk12WlpiVHNmdWRwdm8zU0pOelVKOW43UzhIWDhiVEJfcWNXUkE4Zkt4c0s?oc=5",
+        "pub_date": "Mon, 27 Apr 2026 03:33:44 GMT",
+        "source": "이뉴스투데이",
+        "description": "“장시간 플레잉 전방면 뒷받침”···시디즈, 게이밍의자 ‘GX’ 출시 &nbsp;&nbsp; 이뉴스투데이",
+        "matched_keyword": "시디즈 의자",
+        "category": "자사 브랜드 소식",
+        "importance": "중",
+        "summary": "시디즈가 게이밍의자 신제품 'GX'를 출시했습니다. 장시간 플레이 시 신체 전 부위를 지지하는 설계를 강조했습니다. 게이밍 시장 확대에 따라 전문화된 의자 라인업을 강화하는 움직임입니다.",
+        "insight": "게이밍 의자가 이제 '오타쿠 물건'에서 주류 카테고리로 올라온 걸 보면, 우리가 놓친 라이프스타일 수요가 또 뭐가 있을지 궁금해집니다.",
+        "brands": [
+          "시디즈"
+        ],
+        "type": "internal"
+      }
+    ],
+    "AI 도구·동향": [
+      {
+        "title": "“정액은 끝났다” 깃허브 코파일럿, AI 크레딧 체계 도입",
+        "link": "https://news.google.com/rss/articles/CBMiywJBVV95cUxQeTk0YmEydUE3MmZVSkFKX1NWaU1OdWZSYnVFekp0elBRQlRvczlWUWRQR3NnU2doRXNvZ25TODdqTERwb3ZBcUR5ZDd2Q29iV0pjc2t4SHpsaURua3U1X3h4VzBRWWtIamVGRHF6Q3RmTXpHamlPd1kzYnYtR2NiaS03S0x3cXBRTHB3LWkwRkRmZGhkak9yQ1hzZlhSZ3RiRHdnRGRtX243dlRuSEQ5WUVmVVE3cUs3N2ZTQnhwYWVLQkNCMHd3Q0ltak51UmFfVHprcHZBRlFMRDRRU21WMnc5ZU1EM3dsRjMtdGdIaHN5OXducDZGSG93bG03blZoM3hsZVF6cEpUbXNvYUVVdFJscEl2RzNfSVFlc1Z0NU9EMTN5b2E3NWdsWEhjZmRldUdCQlNmM2dzbW9VNTRfb1U2WDFubm5xM0E4?oc=5",
+        "pub_date": "Mon, 27 Apr 2026 23:30:15 GMT",
+        "source": "itworld.co.kr",
+        "description": "“정액은 끝났다” 깃허브 코파일럿, AI 크레딧 체계 도입 &nbsp;&nbsp; itworld.co.kr",
+        "matched_keyword": "GitHub Copilot",
+        "category": "AI 도구·동향",
+        "importance": "중",
+        "summary": "깃허브 코파일럿(개발자 AI 어시스턴트)이 종량제 크레딧 시스템으로 변경되었습니다. 기존 정액 구독에서 '쓸 만큼 내는' 방식으로 바뀌어 개발자들의 비용 부담이 달라질 수 있습니다.",
+        "insight": "AI 도구의 가격 모델이 구독에서 종량제로 바뀌는 추세가 보이네요. 우리 회사에서 쓰는 AI 서비스들도 비용 효율을 다시 한번 살펴봐야겠단 생각이 듭니다.",
+        "brands": [],
+        "type": "ai"
+      },
+      {
+        "title": "이제 Mac 환경에서도 제미나이 앱을 만나보세요",
+        "link": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOcW9xdjdiX1hrZHNlRXY1Q2FvZHRKTWU1OU5EWmtNUTRRSnhmbnN0bUVlbXNXZnNyNWFsa2JEdG9mbFpaSFNCR3Q1T0Z3bnRUdU5lcW0tTGJSQlBUODZQWlpySGJhaDI1UGVpc1E5eXgySHRQQXJSRFFzZTh6U25XMg?oc=5",
+        "pub_date": "Mon, 27 Apr 2026 07:00:00 GMT",
+        "source": "blog.google",
+        "description": "이제 Mac 환경에서도 제미나이 앱을 만나보세요 &nbsp;&nbsp; blog.google",
+        "matched_keyword": "Gemini 구글 AI",
+        "category": "AI 도구·동향",
+        "importance": "하",
+        "summary": "구글의 AI 어시스턴트 '제미나이'가 이제 맥(Mac) 환경에서도 앱으로 사용할 수 있게 되었습니다. 스마트폰뿐 아니라 컴퓨터 환경에서도 AI의 도움을 받을 수 있게 확장된 것입니다.",
+        "insight": "AI 어시스턴트가 모든 기기에서 자연스럽게 대화하는 시대가 오고 있네요. 우리 일터에서도 맥 사용자들이 점점 늘어나는데, AI가 일하는 방식을 어떻게 바꿀지 궁금합니다.",
+        "brands": [],
+        "type": "ai"
+      }
+    ]
+  }
+}

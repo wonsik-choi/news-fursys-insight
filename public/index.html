@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fursys-Insight · 2026.04.30 목요일</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf7;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --ink-light: #888;
+    --rule: #e5e3dd;
+    --accent: #b91c1c;
+    --insight: #c9a961;
+    --serif: 'Noto Serif KR', 'Nanum Myeongjo', Georgia, serif;
+    --sans: 'Noto Sans KR', -apple-system, 'Segoe UI', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 56px 24px 80px; }
+
+  /* Masthead - minimal */
+  .mast { margin-bottom: 36px; padding-bottom: 18px; border-bottom: 1px solid var(--rule); }
+  .mast h1 {
+    font-family: var(--serif); font-weight: 900;
+    font-size: 26px; letter-spacing: -.6px;
+    margin: 0 0 5px; color: var(--ink);
+  }
+  .mast h1 .accent { color: var(--accent); }
+  .mast .date {
+    font-family: var(--sans); font-size: 13px;
+    color: var(--ink-light); letter-spacing: .3px;
+  }
+
+  /* Filter - compact dropdowns */
+  .filter {
+    display: flex; gap: 8px;
+    margin-bottom: 8px; align-items: center;
+    font-family: var(--sans);
+  }
+  .filter select {
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    background: transparent;
+    border: 1px solid var(--rule);
+    padding: 6px 28px 6px 12px;
+    font-family: inherit; font-size: 12px;
+    color: var(--ink-soft);
+    border-radius: 0;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23888' d='M0 0l5 6 5-6z'/></svg>");
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+    background-size: 8px;
+  }
+  .filter select:focus { outline: none; border-color: var(--ink); color: var(--ink); }
+  .filter select:hover { border-color: var(--ink); }
+  .filter .vcount {
+    margin-left: auto; color: var(--ink-light);
+    font-size: 11px; letter-spacing: .5px;
+  }
+
+  /* Entries - editorial column */
+  main { padding-top: 8px; }
+  .entry {
+    display: grid; grid-template-columns: 50px 1fr;
+    gap: 24px; padding: 32px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .entry:last-child { border-bottom: none; }
+
+  .entry-num {
+    font-family: var(--serif); font-weight: 300;
+    font-size: 30px; color: #c5c2b8;
+    line-height: 1; padding-top: 4px;
+    letter-spacing: -1px;
+  }
+  .entry-body { min-width: 0; }
+
+  .entry-tags {
+    margin-bottom: 8px;
+    font-family: var(--sans); font-size: 10px;
+    color: var(--ink-light); letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .entry-tags .brand { color: var(--ink); font-weight: 700; }
+  .entry-tags .type-internal { color: #047857; font-weight: 700; }
+  .entry-tags .type-ai { color: #6d28d9; font-weight: 700; }
+  .entry-tags .imp-high { color: var(--accent); font-weight: 700; }
+  .entry-tags .sep { color: #ccc; margin: 0 6px; }
+
+  .headline {
+    font-family: var(--serif); font-weight: 700;
+    font-size: 22px; line-height: 1.4;
+    margin: 0 0 14px; letter-spacing: -.3px;
+    color: var(--ink);
+  }
+  .headline a { text-decoration: none; }
+  .headline a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  .byline {
+    font-family: var(--sans); font-size: 11px;
+    color: var(--ink-light); letter-spacing: .8px;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+  .byline a {
+    color: var(--accent); font-weight: 600;
+    text-decoration: none;
+  }
+  .byline a:hover { text-decoration: underline; }
+
+  .summary {
+    font-family: var(--serif); font-size: 15.5px;
+    color: var(--ink); line-height: 1.75;
+    margin: 0 0 18px;
+  }
+
+  .insight {
+    font-family: var(--serif); font-size: 14.5px;
+    color: var(--ink-soft); line-height: 1.75;
+    margin: 0; padding: 4px 0 4px 16px;
+    border-left: 2px solid var(--insight);
+    font-style: italic;
+  }
+
+  .empty {
+    text-align: center; padding: 80px 0;
+    color: var(--ink-light); font-family: var(--serif);
+    font-style: italic; font-size: 15px;
+  }
+  .hidden { display: none !important; }
+
+  footer {
+    margin-top: 80px; padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--sans); font-size: 10px;
+    color: var(--ink-light); text-align: center;
+    letter-spacing: .5px; line-height: 1.7;
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 36px 20px 60px; }
+    .entry { grid-template-columns: 36px 1fr; gap: 14px; padding: 26px 0; }
+    .entry-num { font-size: 22px; padding-top: 2px; }
+    .headline { font-size: 19px; }
+    .summary { font-size: 15px; }
+    .insight { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="mast">
+      <h1>FURSYS<span class="accent">-</span>INSIGHT</h1>
+      <div class="date">2026.04.30 목요일 · 오늘의 20건</div>
+    </header>
+
+    <nav class="filter">
+      <select id="day-filter"><option value="today" selected>오늘 (04.30 목)</option><option value="all">전체 7일치</option><option value="2026-04-29">04.29 수</option><option value="2026-04-28">04.28 화</option><option value="2026-04-27">04.27 월</option><option value="2026-04-26">04.26 일</option></select>
+      <select id="brand-filter"><option value="all" selected>모든 브랜드</option><option value="퍼시스">퍼시스</option><option value="일룸">일룸</option><option value="시디즈">시디즈</option><option value="알로소">알로소</option><option value="슬로우베드">슬로우베드</option><option value="레터스">레터스</option></select>
+      <select id="type-filter"><option value="all" selected>모든 구분</option><option value="external">외부 인사이트</option><option value="internal">자사 소식</option><option value="ai">AI 가이드</option></select>
+      <span class="vcount" id="vcount"></span>
+    </nav>
+
+    <main id="entries">
+      <article class="entry" data-day="today" data-brands="퍼시스" data-type="external">
+        <div class="entry-num">01</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiS0FVX3lxTFBHRU5yTTdfWk1tWndTYTVXUEJTTHlNbGYwN0JjTkpxaDFXNmJZanNndkF6ZWp4V1VOY2EwMFBWdWNLRXNCbFZxSVY4Yw?oc=5" target="_blank" rel="noopener">더 화려해진 오피스 가구… 업계 1위도 뛰어들어 경쟁 치열</a></h2>
+          <div class="byline">v.daum.net · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiS0FVX3lxTFBHRU5yTTdfWk1tWndTYTVXUEJTTHlNbGYwN0JjTkpxaDFXNmJZanNndkF6ZWp4V1VOY2EwMFBWdWNLRXNCbFZxSVY4Yw?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">오피스 가구가 기능뿐 아니라 디자인까지 중요해지면서 한샘 같은 업계 1위들도 시장에 뛰어들고 있습니다. 사무가구 시장이 더 이상 틈새가 아닌 주류 시장으로 부상했음을 보여주는 신호입니다.</p>
+          <p class="insight">업계 최강자들이 몰려올 정도면 사무가구 시장이 정말 커졌다는 뜻인데, 동시에 경쟁도 한 단계 업그레이드될 거라는 게 느껴집니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="일룸,알로소,슬로우베드" data-type="external">
+        <div class="entry-num">02</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">일룸 · 알로소 · 슬로우베드</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5lM2o0YkRCbWR1aE90cEYtWElwd1dMZm4yTXk4MnEwNVl0akktLXdTdklhU3FicXA1TFhSR1hlaUM5Y0tDWHh0ZU5tSzR6NHZyMG56bHR2eFhUb1BESFc0ZmxkNmU3TmJNNXc?oc=5" target="_blank" rel="noopener">프리미엄 리빙 시장 성장세…한샘, &#x27;브랜드 경험&#x27; 승부수</a></h2>
+          <div class="byline">뉴스워치 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5lM2o0YkRCbWR1aE90cEYtWElwd1dMZm4yTXk4MnEwNVl0akktLXdTdklhU3FicXA1TFhSR1hlaUM5Y0tDWHh0ZU5tSzR6NHZyMG56bHR2eFhUb1BESFc0ZmxkNmU3TmJNNXc?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">프리미엄 리빙 시장이 성장세를 보이면서 한샘이 &#x27;브랜드 경험&#x27;을 승부수로 내밀고 있다. 가격 경쟁보다 브랜드 신뢰도와 라이프스타일 제안이 차별화 전략으로 부상 중이다.</p>
+          <p class="insight">가구 시장이 단순히 &#x27;좋은 물건&#x27;을 파는 걸 넘어 &#x27;누가 어떻게 팔아주는가&#x27;에서 승부가 나는 구조로 변했네요. 우리 브랜드들의 고객 경험은 얼마나 일관되고 기억될 만한가요?</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="퍼시스" data-type="external">
+        <div class="entry-num">03</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBWZU5mZlAyZUJwX0ZQSDNXYnZtWkpSVDdGWmJtUVN2Qk9vWVNvYi13cUo2VlFvM2ZacGFiZkJpYUhLeWR6andsT1NiVGRpYlJETUNtRw?oc=5" target="_blank" rel="noopener">[단독] 2030 “재택근무 없애? 그럼 이직”…회사는 ‘근무태만’ 걱정만</a></h2>
+          <div class="byline">매일경제 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBWZU5mZlAyZUJwX0ZQSDNXYnZtWkpSVDdGWmJtUVN2Qk9vWVNvYi13cUo2VlFvM2ZacGFiZkJpYUhLeWR6andsT1NiVGRpYlJETUNtRw?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">2030 세대가 재택근무 폐지를 이유로 이직을 고려한다는 조사 결과입니다. 기업은 &#x27;근무태만&#x27; 우려로 사무실 복귀를 강행하는데, 세대 간 근무 방식에 대한 기대치 충돌이 심화되고 있습니다.</p>
+          <p class="insight">신입/신생 세대에게 재택근무는 이제 &#x27;복리후생&#x27;이 아니라 &#x27;근무 조건&#x27;이 된 셈이네요. 사무실 문화를 재설계하지 않으면 인재 유출이 가속될 것 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="퍼시스" data-type="external">
+        <div class="entry-num">04</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMia0FVX3lxTFA3N1dCMzVTSWpwYU9sOXBxMmdocUJoZEVnYW1ZOUJWSWJlUFdwWXQ2R1BqV1NZYU5UaTl6bmRxS1lXM1QyX2JzY3dYX0llYjJ0ZEVidU8wN2FoMURtUm5ibmVwaWdqR2VIUXVv0gFwQVVfeXFMTkF4NmVncUNQa3ZUcFN0a3FMbmtIekZ4YnFJX1ExLVFRWGg4NUpkcFEyd2pweHlkQlUzVjdraFV4ckVQc2lhRkkyQnp3cEFPbzBVcEx3WGF3YVlDMmd4S3hIc0JEMV9YcDM4UTNncDE1Mw?oc=5" target="_blank" rel="noopener">에너지 안보 대응 수단 &#x27;재택근무&#x27;…하이브리드는 &#x27;사각지대&#x27; - 머니투데이</a></h2>
+          <div class="byline">머니투데이 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMia0FVX3lxTFA3N1dCMzVTSWpwYU9sOXBxMmdocUJoZEVnYW1ZOUJWSWJlUFdwWXQ2R1BqV1NZYU5UaTl6bmRxS1lXM1QyX2JzY3dYX0llYjJ0ZEVidU8wN2FoMURtUm5ibmVwaWdqR2VIUXVv0gFwQVVfeXFMTkF4NmVncUNQa3ZUcFN0a3FMbmtIekZ4YnFJX1ExLVFRWGg4NUpkcFEyd2pweHlkQlUzVjdraFV4ckVQc2lhRkkyQnp3cEFPbzBVcEx3WGF3YVlDMmd4S3hIc0JEMV9YcDM4UTNncDE1Mw?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">에너지 비용 절감을 위해 유럽·미국에서 재택근무 확대 추세가 나타나고 있지만, 하이브리드 워크는 오히려 &#x27;사각지대&#x27;에 놓여 있다는 분석이다. 사무실 운영 비용을 완전히 줄일 수도, 직원 만족도를 최대한 높일 수도 없기 때문이다. 에너지 정책이 일하는 방식의 변화를 직접 추동하는 현상이 흥미롭다.</p>
+          <p class="insight">에너지 가격이 오피스 문화까지 좌우하는 세상이 왔다니요. 만약 에너지 비용이 계속 오르면, 우리의 &#x27;사무공간 설계&#x27; 철학 자체를 다시 생각해봐야 할지도 모릅니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="퍼시스,레터스" data-type="external">
+        <div class="entry-num">05</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스 · 레터스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5iVHJjbmlIeVY5NEVpbTZlbXZNamZYUjdTOEhhRElJMUNabHc0bGNVLTFwYnotZl9Cb1FqaW80U01vc1RON1ExVDlUSVVvQVU?oc=5" target="_blank" rel="noopener">&quot;사무공간·물류센터 기능 변화 설계부터 IT인프라 반영해야&quot; [FIND 제24회 서울국제A&amp;D컨퍼런스]</a></h2>
+          <div class="byline">v.daum.net · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5iVHJjbmlIeVY5NEVpbTZlbXZNamZYUjdTOEhhRElJMUNabHc0bGNVLTFwYnotZl9Cb1FqaW80U01vc1RON1ExVDlUSVVvQVU?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">사무공간과 물류센터의 기능이 급변하는 시대에, 건축 설계 단계부터 IT 인프라를 함께 고려해야 한다는 업계 의견이 나왔다. 기존처럼 건물을 먼저 짓고 가구·네트워크를 끼워 맞추는 방식으로는 한계가 있다는 뜻이다.</p>
+          <p class="insight">이제 건축 설계와 가구 설계가 따로 움직일 수 없다는 게 점점 명확해지네요. 퍼시스의 B2B 전략도 &#x27;전체 공간 솔루션&#x27;으로 한 발 더 나아갈 기회인 것 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="퍼시스" data-type="external">
+        <div class="entry-num">06</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMibkFVX3lxTE9oelBHRFRIeTBZNm9NU2pyTzRhcVJDYXcyUVViQllSQllvekM2NTVlTjFlZ0ZXY1JhTE1iaFkzM1V0ZG9FeXpROHRtdW5SMTgtLTNHY0pBUUMyMTRBZ193TzRCRlROS2FIYlZ6a0hB?oc=5" target="_blank" rel="noopener">“알록달록한 사무실 뜬다”…현대리바트, ‘디자인 가구’로 오피스 시장 공략</a></h2>
+          <div class="byline">이지경제 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMibkFVX3lxTE9oelBHRFRIeTBZNm9NU2pyTzRhcVJDYXcyUVViQllSQllvekM2NTVlTjFlZ0ZXY1JhTE1iaFkzM1V0ZG9FeXpROHRtdW5SMTgtLTNHY0pBUUMyMTRBZ193TzRCRlROS2FIYlZ6a0hB?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">현대리바트가 기존의 무채색·기능성 중심 사무용 가구 시장을 탈피해, 컬러풀하고 감정적 매력을 담은 디자인 가구로 공략을 시작했다. &#x27;알록달록한 사무실&#x27;이 직원 만족도와 회사 이미지를 함께 높인다는 마케팅 메시지를 내세우고 있다.</p>
+          <p class="insight">사무실이 회사의 &#x27;신원 표현 공간&#x27;으로 변해가는 흐름이 확실해 보이네요. 우리도 색감·감정·개성 있는 솔루션으로 이 물결을 타고 있는지 확인해볼 타이밍인 것 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="시디즈" data-type="external">
+        <div class="entry-num">07</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">시디즈</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE5WRjNCMmh4b2p3STJVLWliZ0pqV3ZVMzZMYTZrSkM1N0VCcnl3LTFXY24tcUk3QzRQZTIzU1dvb1o0cVhEb2JkeWpnT3dubjJ4SzBIUGJrWmJqUdIBVEFVX3lxTE1JVHVTallabEZ2cldPUTc0b25tZjJYcFpjMEtHRjFJdHFGWTdpb3Z2a1lZRWdLRHJqRzBnUFpCajduU2I4dU14UUtVeUlBSkpHdm9hQg?oc=5" target="_blank" rel="noopener">석 달 만에 1만대 팔린 의자…인체공학적 사무의자 &#x27;인기&#x27;</a></h2>
+          <div class="byline">한국경제 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE5WRjNCMmh4b2p3STJVLWliZ0pqV3ZVMzZMYTZrSkM1N0VCcnl3LTFXY24tcUk3QzRQZTIzU1dvb1o0cVhEb2JkeWpnT3dubjJ4SzBIUGJrWmJqUdIBVEFVX3lxTE1JVHVTallabEZ2cldPUTc0b25tZjJYcFpjMEtHRjFJdHFGWTdpb3Z2a1lZRWdLRHJqRzBnUFpCajduU2I4dU14UUtVeUlBSkpHdm9hQg?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">인체공학적 설계의 사무의자가 3개월 만에 1만대 이상 판매되며 인기를 모으고 있습니다. 재택근무 확산과 건강한 업무 환경에 대한 관심 증가가 의자 시장 성장을 견인하고 있습니다.</p>
+          <p class="insight">사람들이 의자에 예전보다 훨씬 더 진심으로 투자하기 시작했다는 신호네요. 시디즈가 이 수요를 얼마나 잘 포착하고 있는지 궁금합니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="시디즈" data-type="external">
+        <div class="entry-num">08</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">시디즈</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFB4eU00Nl9KZjhoTl9TTGJGUXAwWnY4Z1RNQjFaLVU4cTA4aWJkVTlEWGJUY0VTTjR5XzhreEdMdVNkSEE3VDE2UnhMNVpEOEVpbEpXUW1QSmVvQdIBVEFVX3lxTE5aamg3Y0pBaEJWb2tGNG9lYWF2WEt0OWQyRjY0UzhIWTAtVFNUZDNwQmtIcUlXNkFnQXBPTEprMW0wT1l4UGlndC1qNFhOSXlndjNiVg?oc=5" target="_blank" rel="noopener">시디즈, 거실을 서재처럼…&#x27;뮤브&#x27; 의자, 미니멀 디자인에 편안함 갖춰</a></h2>
+          <div class="byline">한국경제 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFB4eU00Nl9KZjhoTl9TTGJGUXAwWnY4Z1RNQjFaLVU4cTA4aWJkVTlEWGJUY0VTTjR5XzhreEdMdVNkSEE3VDE2UnhMNVpEOEVpbEpXUW1QSmVvQdIBVEFVX3lxTE5aamg3Y0pBaEJWb2tGNG9lYWF2WEt0OWQyRjY0UzhIWTAtVFNUZDNwQmtIcUlXNkFnQXBPTEprMW0wT1l4UGlndC1qNFhOSXlndjNiVg?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">시디즈가 거실 공간까지 활용할 수 있는 신제품 &#x27;뮤브&#x27; 의자를 선보였습니다. 사무실 전용이던 의자가 홈 인테리어 아이템으로 확장되며, 다목적 공간 활용 트렌드를 반영하고 있습니다.</p>
+          <p class="insight">사무의자가 이제 단순히 &#x27;일하는 공간&#x27;을 넘어 &#x27;생활 공간&#x27;의 주요 가구로 재정의되고 있네요. 시디즈의 이런 시도가 의자 산업 구조를 어떻게 흔들지 주목해볼 만합니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="일룸,시디즈" data-type="external">
+        <div class="entry-num">09</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">일룸 · 시디즈</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE1XbHU3N3h5R2UxNWRRbWo5M2gxNHFBczk2dXdHbFlucWx1NWM3R3ZwX1FFQTh1V2lfdDlpdmFKcU1Fc2hoNW44a2RyNk00RzB0UEdiVGhhNTlhUVVaOGc5ejlyZUZDeURw?oc=5" target="_blank" rel="noopener">[트렌드줌인] 홈카페·홈트·홈오피스, 혼자 사는 집이 변하고 있다</a></h2>
+          <div class="byline">데일리팝 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE1XbHU3N3h5R2UxNWRRbWo5M2gxNHFBczk2dXdHbFlucWx1NWM3R3ZwX1FFQTh1V2lfdDlpdmFKcU1Fc2hoNW44a2RyNk00RzB0UEdiVGhhNTlhUVVaOGc5ejlyZUZDeURw?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">1인가구를 중심으로 홈카페, 홈트, 홈오피스 등 개인 맞춤형 집 꾸미기 트렌드가 가속화되고 있습니다. 좁은 공간에서 다양한 기능을 담아내는 가구·인테리어 수요가 급증하는 중입니다.</p>
+          <p class="insight">1인가구의 집이 이제 단순히 &#x27;쉬는 곳&#x27;이 아니라 &#x27;일하고, 운동하고, 여유 즐기는 멀티 공간&#x27;으로 변화하고 있네요. 우리 브랜드들의 1인용 솔루션이 이 흐름을 얼마나 잘 잡고 있을지 궁금합니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="퍼시스" data-type="external">
+        <div class="entry-num">10</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE5pTWduQy1RX3ZsekNjem5YM3ZOY2RsTWxqYldINDFqNHVlaWR1Mm93Vkc1dXhlajNqY0RtYzhXQXNRdnhVQXJONFppOW94UEJIYzRXak9OYmVrdm4wbGtPZHE2Q2NlcG9JWTRsMkZqc9IBZkFVX3lxTE1rVW1fT0pXSkhoYVM0SWRCNzJkTkhuV04zR2huUl9idkRCMGhLNTh1WXVxYm9zcUZ6SzIzSTZrUFlseDBHeWtJNFlYajAwYXpTc1BNMXZndjJBeDVOTGo5SUJUN1piZw?oc=5" target="_blank" rel="noopener">[기고] 2025년 글로벌 테크기업의 오피스 인테리어 트렌드는?</a></h2>
+          <div class="byline">동아일보 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE5pTWduQy1RX3ZsekNjem5YM3ZOY2RsTWxqYldINDFqNHVlaWR1Mm93Vkc1dXhlajNqY0RtYzhXQXNRdnhVQXJONFppOW94UEJIYzRXak9OYmVrdm4wbGtPZHE2Q2NlcG9JWTRsMkZqc9IBZkFVX3lxTE1rVW1fT0pXSkhoYVM0SWRCNzJkTkhuV04zR2huUl9idkRCMGhLNTh1WXVxYm9zcUZ6SzIzSTZrUFlseDBHeWtJNFlYajAwYXpTc1BNMXZndjJBeDVOTGo5SUJUN1piZw?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">2025년 글로벌 테크기업(구글·메타·애플 등)의 오피스는 개별 워크스테이션보다 협업·창의성을 높이는 오픈 공간 디자인으로 바뀌고 있다. 조용한 집중 존, 팀 미팅 라운지, 비포멀 아이디어 교환 공간 등 다양한 기능의 영역이 유기적으로 연결되는 &#x27;하이브리드 워크스페이스&#x27;가 주요 특징이다.</p>
+          <p class="insight">기술 선도 기업들이 &#x27;일하는 방식&#x27;의 물리적 환경을 이렇게 재설계하고 있다면, 그들의 오피스 리뉴얼 프로젝트가 우리 퍼시스의 다음 주요 고객층이 될 가능성이 높아 보입니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="퍼시스" data-type="internal">
+        <div class="entry-num">11</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-internal">자사 소식</span><span class="sep">·</span><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBsaWQ5UWNPMXVicHpoY0hnRWNXUjZ2N21IbzRXYzJCYU5ZbFJfWENGa0FWYUZUUm5sMVAwUXhCX0tvS29OMXdBeENuSmEwcFg1Rk1SVUlsUnd0b3dGLWgyeWFDRmI2SWhXTHfSAW5BVV95cUxNV1B4ZzFkZ1l6b0o0clNCdEZUWmpKbmZQajVaRkJpZjllTm4tWWxLV2Jpa2JYYWFrVlNRS2RNc3BBV3FiUTl3aWVTT1N0WkEtVW9sQ0ZFNldaTWVvbjhKLUhNb2RWQ2RTdEZDMkRXUQ?oc=5" target="_blank" rel="noopener">퍼시스 베트남, 호치민 공과대에 장학금 수여 및 오피스 쇼룸 투어 진행… “베트남 미래 공간 전문가 양성 나서”</a></h2>
+          <div class="byline">매드클럽 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBsaWQ5UWNPMXVicHpoY0hnRWNXUjZ2N21IbzRXYzJCYU5ZbFJfWENGa0FWYUZUUm5sMVAwUXhCX0tvS29OMXdBeENuSmEwcFg1Rk1SVUlsUnd0b3dGLWgyeWFDRmI2SWhXTHfSAW5BVV95cUxNV1B4ZzFkZ1l6b0o0clNCdEZUWmpKbmZQajVaRkJpZjllTm4tWWxLV2Jpa2JYYWFrVlNRS2RNc3BBV3FiUTl3aWVTT1N0WkEtVW9sQ0ZFNldaTWVvbjhKLUhNb2RWQ2RTdEZDMkRXUQ?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">퍼시스 베트남이 호치민 공과대학에 장학금을 수여하고 오피스 쇼룸 투어를 진행했습니다. 동남아 시장 진출 단계에서 현지 미래 인력과의 관계 구축, 브랜드 인지도 강화를 동시에 진행하고 있습니다.</p>
+          <p class="insight">베트남이 제조업 중심지로 떠오르면서 우리도 거기 미래 세대에게 &#x27;퍼시스&#x27;라는 이름을 심어두려는 전략이 보이네요. 선제적인 움직임입니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="일룸" data-type="internal">
+        <div class="entry-num">12</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-internal">자사 소식</span><span class="sep">·</span><span class="brand">일룸</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBGVy1UQTJTSGl4b0ZKOUczYmtDdUZZN1hjUjRVYUdFMFhwTEZQT04ySUFRRXpybjVXWVh6R0lvNlBST2pqcjhnck9xTXhjdjZtYzhzbEc3STZPUWh4?oc=5" target="_blank" rel="noopener">일룸, 변우석·최대훈 손잡고 &#x27;모션–문제가 있었다&#x27; 캠페인 전개</a></h2>
+          <div class="byline">뉴스1 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBGVy1UQTJTSGl4b0ZKOUczYmtDdUZZN1hjUjRVYUdFMFhwTEZQT04ySUFRRXpybjVXWVh6R0lvNlBST2pqcjhnck9xTXhjdjZtYzhzbEc3STZPUWh4?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">일룸이 배우 변우석과 최대훈을 광고 모델로 영입해 &#x27;모션–문제가 있었다&#x27; 캠페인을 전개합니다. 넷플릭스 인기 드라마 &#x27;모범 형사&#x27;의 패러디를 활용한 유머러스한 광고 전략입니다. 모션 가구의 필요성을 재미있게 전달하려는 의도입니다.</p>
+          <p class="insight">드라마 소재를 광고에 바로 녹여내는 걸 보니, 대중문화와 제품 마케팅의 타이밍이 정말 촘촘해졌네요. 트렌드를 놓치지 않고 빠르게 반영하는 실행력이 느껴집니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="슬로우베드" data-type="internal">
+        <div class="entry-num">13</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-internal">자사 소식</span><span class="sep">·</span><span class="brand">슬로우베드</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBMRFZpT0JoNGd1eE95Qno3V2pJQU1GMUdRN08xa0stNGlDN2VQby1jRWlfTC1aenZ0c1FkcDE5X2hxeElYN2otbDZjczVpdWRUdl9IY1h1Vzh4S1lG?oc=5" target="_blank" rel="noopener">&quot;침대 위에서 공연·요가·영화&quot;…일룸, 성수에 &#x27;모션베드 체험&#x27; 팝업</a></h2>
+          <div class="byline">뉴스1 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBMRFZpT0JoNGd1eE95Qno3V2pJQU1GMUdRN08xa0stNGlDN2VQby1jRWlfTC1aenZ0c1FkcDE5X2hxeElYN2otbDZjczVpdWRUdl9IY1h1Vzh4S1lG?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">일룸이 모션베드를 침대 위에서의 다양한 활동(공연, 요가, 영화)을 체험하게 하는 팝업을 열었습니다. 침대를 단순 수면 도구에서 &#x27;라이프스타일 플랫폼&#x27;으로 재정의하는 마케팅입니다.</p>
+          <p class="insight">슬로우베드의 모션베드 같은 기술 상품은 사양만 설명해서는 안 되고, 직접 누워서 &#x27;이 침대 위에서 뭘 할 수 있을까&#x27; 상상하게 만드는 게 핵심이겠네요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="레터스" data-type="internal">
+        <div class="entry-num">14</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-internal">자사 소식</span><span class="sep">·</span><span class="brand">레터스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMia0FVX3lxTFBZQ1phMzFva0V4XzFkV0YteUM5TzFmNTlCR2paMzk5T21yZG5vN1hvVmNENVY4VTBrSmhtci1VZ080aDJvcTMtYm9tYlhjRUVVS011Si1jcXFkMWtITmlKSVdWS1hTVEdzajZZ?oc=5" target="_blank" rel="noopener">‘설치 물류 28년’ 레터스, 업계 1위 성장 활로 찾았다</a></h2>
+          <div class="byline">물류신문 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMia0FVX3lxTFBZQ1phMzFva0V4XzFkV0YteUM5TzFmNTlCR2paMzk5T21yZG5vN1hvVmNENVY4VTBrSmhtci1VZ080aDJvcTMtYm9tYlhjRUVVS011Si1jcXFkMWtITmlKSVdWS1hTVEdzajZZ?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">퍼시스 물류 자회사 레터스가 28년 설치 물류 경험을 바탕으로 &#x27;통합 가구 솔루션&#x27; 사업으로 확장했다. 단순 배송·설치를 넘어 기업 이사, 사무공간 리뉴얼, 가구 유지보수까지 원스톱으로 제공하는 패키지 상품을 론칭했다는 뜻이다. 업계 1위 위상을 성장 기회로 다시 정의한 움직임이다.</p>
+          <p class="insight">설치 물류 전문성이 있으면 그 다음 단계인 &#x27;공간 솔루션 파트너&#x27;로 자연스럽게 진화할 수 있겠네요. 고객들이 제품만 사는 게 아니라 &#x27;관리받는 경험&#x27;을 원하는 트렌드를 읽은 것 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="퍼시스,레터스" data-type="ai">
+        <div class="entry-num">15</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span><span class="sep">·</span><span class="brand">퍼시스 · 레터스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiSEFVX3lxTE5sblJlYXg5Mm5UcGx0YnpfTnZSbXhOVmh5WTY0WG1DZVNMZmxKbHJRdjBqX2hSWXRYbHMwUmNHRkJlVHJoeG5CYw?oc=5" target="_blank" rel="noopener">머스크, AI 코딩 도구 커서 89조 원에 품는다</a></h2>
+          <div class="byline">플래텀(Platum) · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiSEFVX3lxTE5sblJlYXg5Mm5UcGx0YnpfTnZSbXhOVmh5WTY0WG1DZVNMZmxKbHJRdjBqX2hSWXRYbHMwUmNHRkJlVHJoeG5CYw?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">머스크의 기업이 AI 코딩 도구 Cursor를 89조 원대에 인수할 계약을 체결했습니다. Cursor는 개발자가 코드를 작성할 때 AI가 자동으로 도와주는 도구로, 소프트웨어 개발 방식을 근본적으로 바꾸는 중입니다.</p>
+          <p class="insight">대규모 자금이 몰리는 AI 코딩 도구는 우리 같은 제조·서비스 기업들도 개발팀의 생산성을 크게 높일 수 있다는 신호 같습니다. 자사 개발팀이 이런 도구를 이미 쓰고 있는지, 아니면 검토 중인지 자연스럽게 궁금해집니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="" data-type="ai">
+        <div class="entry-num">16</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBYNG1qWmZuaVVVOW5GTFg4d1RLVmpGWVFaakpDN2JpMnVTOUcwcmVUZEpCakg1QzNHdm9BdG5IWW1xNzJVV0F0TjJlU1ZoeEpCeTdYYlg5ZWlJdlF5WFVDXzMzQVVWUTVPb3c?oc=5" target="_blank" rel="noopener">앤트로픽, 올인원 디자인 도구 ‘클로드 디자인’ 공개...어도비·캔바 위협</a></h2>
+          <div class="byline">AI타임스 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBYNG1qWmZuaVVVOW5GTFg4d1RLVmpGWVFaakpDN2JpMnVTOUcwcmVUZEpCakg1QzNHdm9BdG5IWW1xNzJVV0F0TjJlU1ZoeEpCeTdYYlg5ZWlJdlF5WFVDXzMzQVVWUTVPb3c?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">앤트로픽이 &#x27;클로드 디자인&#x27;이라는 올인원 디자인 도구를 공개했습니다. 이 도구는 텍스트 지시만으로 디자인을 생성하고 편집할 수 있어, 어도비·캔바 같은 기존 디자인 소프트웨어의 영역을 위협하고 있습니다. 전문 디자이너뿐 아니라 일반 사용자도 쉽게 고품질 디자인을 만들 수 있게 되는 변화입니다.</p>
+          <p class="insight">AI가 &#x27;말로 하는 디자인&#x27;을 가능하게 하면서, 결국 디자인의 진짜 가치가 뭔지 다시 생각해 봐야 할 시점 같네요. 우리 브랜드의 시각적 정체성을 지켜내는 부분이 더 중요해질 수도 있겠다는 생각이 듭니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="" data-type="ai">
+        <div class="entry-num">17</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE5velVoNDBreWgyM3dVTklnbVRLZEtWVUF5VThxRHBydFhfT0lsazdZcUlhaXE3NFlOMElncTBzc0tIckt4ckg3MDl5NnViekw1Qy1jc19EWUVYSXNxWVVmTDBNQUdQR1JoMW1TYg?oc=5" target="_blank" rel="noopener">피그마, AI 에이전트에 캔버스 개방</a></h2>
+          <div class="byline">매드타임스 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE5velVoNDBreWgyM3dVTklnbVRLZEtWVUF5VThxRHBydFhfT0lsazdZcUlhaXE3NFlOMElncTBzc0tIckt4ckg3MDl5NnViekw1Qy1jc19EWUVYSXNxWVVmTDBNQUdQR1JoMW1TYg?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">Figma가 AI 에이전트(즉, AI가 자동으로 작동하는 도구)에게 캔버스를 개방했습니다. 이는 디자이너가 기본 뼈대를 만들면 AI가 알아서 수정·보완하는 협업 방식이 가능하다는 뜻입니다. 디자인 작업 속도가 비약적으로 올라갈 수 있습니다.</p>
+          <p class="insight">AI가 디자인 도구 안에서 자기 역할을 하기 시작했다는 게 정말 새로운 신호네요. 디자이너들이 &#x27;만드는 일&#x27;보다 &#x27;방향을 정하고 검수하는 일&#x27;으로 역할이 바뀌는 걸 눈앞에서 보는 느낌입니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="" data-type="ai">
+        <div class="entry-num">18</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMihwFBVV95cUxOenloZ0hiQXlqTWpNZUNTZDJZTTRwZS1Yc091R1hOT3FTeEpaZkQxWk9TdHdlT2dubnRidzZEaXVpWWUwM0JwbGI2MnBvMmxGVWk5Q1VkaHVrRWZxM0dGb2xHNjFYTlE3QjJIYVJsdVI5SUhNd19GUEVIb0pCbDJsYVBqdGRuLVk?oc=5" target="_blank" rel="noopener">에이전트를 내재화한 앤트로픽 클로드 모델 신기능: Computer Use, Dispatch, Auto Mode</a></h2>
+          <div class="byline">네이버 프리미엄콘텐츠 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMihwFBVV95cUxOenloZ0hiQXlqTWpNZUNTZDJZTTRwZS1Yc091R1hOT3FTeEpaZkQxWk9TdHdlT2dubnRidzZEaXVpWWUwM0JwbGI2MnBvMmxGVWk5Q1VkaHVrRWZxM0dGb2xHNjFYTlE3QjJIYVJsdVI5SUhNd19GUEVIb0pCbDJsYVBqdGRuLVk?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">OpenAI의 경쟁사 Anthropic이 Claude AI에 새로운 기능들을 추가했다. &#x27;Computer Use&#x27;는 AI가 마우스·키보드로 직접 컴퓨터를 조작할 수 있게 해주고, &#x27;Dispatch&#x27;는 여러 작업을 자동으로 분배하고, &#x27;Auto Mode&#x27;는 사용자 개입 없이 스스로 판단해서 움직인다. 쉽게 말해 AI가 이제 &#x27;혼자 일을 처리할 수 있게&#x27; 진화했다는 뜻이다.</p>
+          <p class="insight">AI가 단순히 대답만 하던 시대에서 벗어나 &#x27;실제로 업무를 대신 처리하는&#x27; 단계로 넘어가는 게 느껴집니다. 우리 업무 중에 자동화될 수 있는 부분이 어딘지 한번 상상해볼 만하네요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="퍼시스,레터스" data-type="external">
+        <div class="entry-num">19</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스 · 레터스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiTkFVX3lxTFA2MldnWk9ORm1jdXJFU2dUcERfaUc5MVdMRVVpeUlCcnRpSlJCeFc4MTVYUGtxM2JoM2ZSajFtd21sazhUTzlZR3ZpSUQyUQ?oc=5" target="_blank" rel="noopener">패스트파이브, &#x27;2026 대 오피스 전략&#x27; 웨비나 개최…공간 전략 제시</a></h2>
+          <div class="byline">전자신문 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiTkFVX3lxTFA2MldnWk9ORm1jdXJFU2dUcERfaUc5MVdMRVVpeUlCcnRpSlJCeFc4MTVYUGtxM2JoM2ZSajFtd21sazhUTzlZR3ZpSUQyUQ?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">패스트파이브가 &#x27;2026 대 오피스 전략&#x27;을 주제로 웨비나를 열어 기업들의 사무공간 리뉴얼 트렌드와 비용 효율화 방안을 제시했습니다. 시장의 오피스 공간 전략이 변화하고 있음을 보여주는 신호입니다.</p>
+          <p class="insight">기업들이 사무실 구성을 다시 생각하는 중이라는 게 느껴지네요. 우리 퍼시스와 레터스 같은 기업들에겐 좋은 기회가 될 것 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="today" data-brands="퍼시스" data-type="external">
+        <div class="entry-num">20</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBnSzk2RG9XLTZqdk00aUpYQzhnLUlNcjlDYk43QWFUeGhpX1JNcHZ5b1o0aWVSSHlmM19MMTRyYUFVS2dIcXBYWktDNEUwaDJEY1JyenhmRzVoc0ZZRmpORw?oc=5" target="_blank" rel="noopener">사무가구 시장 뛰어든 한샘, &#x27;게임체인저&#x27;엔 물음표</a></h2>
+          <div class="byline">뉴스토마토 · 04.30 목 · <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTFBnSzk2RG9XLTZqdk00aUpYQzhnLUlNcjlDYk43QWFUeGhpX1JNcHZ5b1o0aWVSSHlmM19MMTRyYUFVS2dIcXBYWktDNEUwaDJEY1JyenhmRzVoc0ZZRmpORw?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">한샘이 가정용 가구 강자에서 벗어나 사무가구 시장으로 진입. 기존의 경쟁 구도에 새로운 플레이어가 등장했으나, 시장 리더십 확보에는 여전히 물음표가 붙어 있다.</p>
+          <p class="insight">가구 업계의 &#x27;멀티플레이&#x27;가 본격화하는 건데, 퍼시스의 B2B 사무가구 1위 위치가 한샘 같은 신규 진입자들에게 어떻게 방어될지가 흥미롭네요. 우리만의 강점이 뭘까요?</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="퍼시스" data-type="external">
+        <div class="entry-num">01</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBCZ25ZR1M3bFgwZDlVaC1IdEk1TTdrNkpvZ20zaU5TY0IzQVV2Vmo5R1BkeUdlTkE0dFF5T1ZLLWtDWDAzNC1CTmFjNXJFbUFzQjVDQ19qbl9aQdIBVEFVX3lxTE5PNkdZVXJlUjJTbC12TTVvUi1YVUNtNzRuQUlCZTQ1WUZ5Tkk1dE1fOVhZTU9mRF8zMHZkZ1lRcFdtak9OWHdTWnVBanhHVk5aQTU2RA?oc=5" target="_blank" rel="noopener">&quot;퍼시스 잡아라&quot; 리바트 이어 한샘도 오피스 시장 뛰어들었다</a></h2>
+          <div class="byline">한국경제 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBCZ25ZR1M3bFgwZDlVaC1IdEk1TTdrNkpvZ20zaU5TY0IzQVV2Vmo5R1BkeUdlTkE0dFF5T1ZLLWtDWDAzNC1CTmFjNXJFbUFzQjVDQ19qbl9aQdIBVEFVX3lxTE5PNkdZVXJlUjJTbC12TTVvUi1YVUNtNzRuQUlCZTQ1WUZ5Tkk1dE1fOVhZTU9mRF8zMHZkZ1lRcFdtak9OWHdTWnVBanhHVk5aQTU2RA?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">한샘이 리바트에 이어 B2B 오피스 인테리어 시장에 진입했습니다. 1.2조 규모의 시장을 겨냥해 퍼시스의 기존 지배적 위치를 노리고 있다는 게 기사의 핵심입니다.</p>
+          <p class="insight">퍼시스가 오피스 시장의 절대강자였던 만큼, 이제 경쟁사들이 &#x27;퍼시스를 이기려면&#x27;이라는 프레임으로 움직이기 시작한 거네요. 시장이 성장하는 거냐, 우리 점유율이 깎이는 거냐를 구분해서 봐야 할 시점 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="슬로우베드" data-type="external">
+        <div class="entry-num">02</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">슬로우베드</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMickFVX3lxTFB1endLRE5pXzUtLXNma0V3V2lIcWZ0NGRITG5ZLUthcENBaWdzeW9kMVBGcC1xTDVWQ3pCM09EVGpPRkc4SDBfbjNPQTdzSDkxS1J6OGhjOFFaMTlKTTg0aEJaYTNZY2t4blVTMnFQRU5uUQ?oc=5" target="_blank" rel="noopener">“뜨거운 반응에 다시 열었다”…시몬스, 뷰티레스트 블랙 팝업 확대 운영</a></h2>
+          <div class="byline">인더스트리뉴스 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMickFVX3lxTFB1endLRE5pXzUtLXNma0V3V2lIcWZ0NGRITG5ZLUthcENBaWdzeW9kMVBGcC1xTDVWQ3pCM09EVGpPRkc4SDBfbjNPQTdzSDkxS1J6OGhjOFFaMTlKTTg0aEJaYTNZY2t4blVTMnFQRU5uUQ?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">시몬스가 프리미엄 라인 &#x27;뷰티레스트 블랙&#x27; 팝업을 &#x27;뜨거운 반응&#x27;을 이유로 다시 확대 운영하고 있다. 팝업 기간을 한정해서 희소성을 만들고, 수요가 높으면 재오픈하는 방식으로 체계적인 마케팅을 진행 중이다.</p>
+          <p class="insight">팝업이 단순 한 번의 이벤트가 아니라 &#x27;반응을 보고 다시 여는&#x27; 반복적 마케팅 수단이 되는 모양이네요. 슬로우베드도 팝업 반응을 계획된 재개장으로 이어갈 만한 구조가 있으면 좋을 것 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="퍼시스" data-type="external">
+        <div class="entry-num">03</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBWZU5mZlAyZUJwX0ZQSDNXYnZtWkpSVDdGWmJtUVN2Qk9vWVNvYi13cUo2VlFvM2ZacGFiZkJpYUhLeWR6andsT1NiVGRpYlJETUNtRw?oc=5" target="_blank" rel="noopener">[단독] 2030 “재택근무 없애? 그럼 이직”…회사는 ‘근무태만’ 걱정만</a></h2>
+          <div class="byline">매일경제 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiVEFVX3lxTFBWZU5mZlAyZUJwX0ZQSDNXYnZtWkpSVDdGWmJtUVN2Qk9vWVNvYi13cUo2VlFvM2ZacGFiZkJpYUhLeWR6andsT1NiVGRpYlJETUNtRw?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">2030 세대가 재택근무 폐지를 이직 사유로 들면서, 회사들은 출근을 강제하면서도 근무 집중도와 생산성을 걱정하고 있다. 세대 간 일하는 방식의 선호도가 극명하게 갈리는 상황이다.</p>
+          <p class="insight">2030이 &#x27;재택근무가 없으면 회사 안 간다&#x27;고 하는데, 기업들은 &#x27;어떻게 사무실로 다시 모을까&#x27; 고민만 하는 게 느껴져요. 결국 오피스 공간 자체를 더 매력적으로 만들어야 한다면, 퍼시스 같은 사무가구 기업의 역할이 중요해질 것 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="퍼시스,레터스" data-type="external">
+        <div class="entry-num">04</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스 · 레터스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5iVHJjbmlIeVY5NEVpbTZlbXZNamZYUjdTOEhhRElJMUNabHc0bGNVLTFwYnotZl9Cb1FqaW80U01vc1RON1ExVDlUSVVvQVU?oc=5" target="_blank" rel="noopener">&quot;사무공간·물류센터 기능 변화 설계부터 IT인프라 반영해야&quot; [FIND 제24회 서울국제A&amp;D컨퍼런스]</a></h2>
+          <div class="byline">v.daum.net · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE5iVHJjbmlIeVY5NEVpbTZlbXZNamZYUjdTOEhhRElJMUNabHc0bGNVLTFwYnotZl9Cb1FqaW80U01vc1RON1ExVDlUSVVvQVU?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">A&amp;D 컨퍼런스에서 전문가들은 사무공간과 물류센터의 기능이 급변하고 있으며, 설계 단계부터 IT 인프라까지 통합적으로 고려해야 한다고 강조했습니다. 공간 효율성만이 아니라 기술 연계성이 공간 기획의 핵심이 되고 있는 추세입니다.</p>
+          <p class="insight">설계가 IT와 떨어져 있던 시대는 끝났구나 싶네요. 우리가 사무공간을 제안할 때 네트워크, 전력, 데이터 흐름까지 함께 고려하는 &#x27;통합 솔루션&#x27; 관점이 경쟁력이 될 것 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="퍼시스" data-type="external">
+        <div class="entry-num">05</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5DOEk5YjJmYWNPSk14TlMwak9qVmRhd3dfV2FLcmN2bW9CNVdHeEMxaFFZOEp4TVQ3SnpnRXhJT0plbV90NEZmejVaaVJTczRKTnlIdGVuOXIwWWFuYjlfX3FBQVNjLVRoM3c?oc=5" target="_blank" rel="noopener">데스커, 2026년 워크 트렌드 키워드는 ‘W.O.R.K’</a></h2>
+          <div class="byline">나무신문 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE5DOEk5YjJmYWNPSk14TlMwak9qVmRhd3dfV2FLcmN2bW9CNVdHeEMxaFFZOEp4TVQ3SnpnRXhJT0plbV90NEZmejVaaVJTczRKTnlIdGVuOXIwWWFuYjlfX3FBQVNjLVRoM3c?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">가구/오피스 전문 미디어 데스커가 발표한 2026년 워크 트렌드 키워드는 &#x27;W.O.R.K&#x27;(Wellness, Openness, Responsibility, Knowledge)입니다. 웰니스·개방성·책임감·학습이 사무공간 설계의 중심축이 될 것이라는 전망입니다.</p>
+          <p class="insight">올해 가구업계의 화두가 &#x27;W.O.R.K&#x27; 네 글자에 압축된 걸 보면, 그 각각을 현실의 제품·공간에 어떻게 구현할지가 우리의 경쟁 포인트가 될 것 같네요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="시디즈" data-type="external">
+        <div class="entry-num">06</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">시디즈</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFB4eU00Nl9KZjhoTl9TTGJGUXAwWnY4Z1RNQjFaLVU4cTA4aWJkVTlEWGJUY0VTTjR5XzhreEdMdVNkSEE3VDE2UnhMNVpEOEVpbEpXUW1QSmVvQdIBVEFVX3lxTE5aamg3Y0pBaEJWb2tGNG9lYWF2WEt0OWQyRjY0UzhIWTAtVFNUZDNwQmtIcUlXNkFnQXBPTEprMW0wT1l4UGlndC1qNFhOSXlndjNiVg?oc=5" target="_blank" rel="noopener">시디즈, 거실을 서재처럼…&#x27;뮤브&#x27; 의자, 미니멀 디자인에 편안함 갖춰</a></h2>
+          <div class="byline">한국경제 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFB4eU00Nl9KZjhoTl9TTGJGUXAwWnY4Z1RNQjFaLVU4cTA4aWJkVTlEWGJUY0VTTjR5XzhreEdMdVNkSEE3VDE2UnhMNVpEOEVpbEpXUW1QSmVvQdIBVEFVX3lxTE5aamg3Y0pBaEJWb2tGNG9lYWF2WEt0OWQyRjY0UzhIWTAtVFNUZDNwQmtIcUlXNkFnQXBPTEprMW0wT1l4UGlndC1qNFhOSXlndjNiVg?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">시디즈가 &#x27;뮤브(MOOVE)&#x27; 의자를 출시했으며, 거실용 서재 의자로 미니멀 디자인과 편안함을 결합한 신제품입니다. 사무실뿐 아닌 거실 공간까지 의자의 쓰임새를 확장하는 움직임입니다.</p>
+          <p class="insight">우리 시디즈가 의자를 &#x27;거실 가구&#x27;로 재포지셔닝하는 거네요. 사무 의자에서 라이프스타일 가구로 넘어가는 흐름이 보입니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="퍼시스" data-type="external">
+        <div class="entry-num">07</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE5pTWduQy1RX3ZsekNjem5YM3ZOY2RsTWxqYldINDFqNHVlaWR1Mm93Vkc1dXhlajNqY0RtYzhXQXNRdnhVQXJONFppOW94UEJIYzRXak9OYmVrdm4wbGtPZHE2Q2NlcG9JWTRsMkZqc9IBZkFVX3lxTE1rVW1fT0pXSkhoYVM0SWRCNzJkTkhuV04zR2huUl9idkRCMGhLNTh1WXVxYm9zcUZ6SzIzSTZrUFlseDBHeWtJNFlYajAwYXpTc1BNMXZndjJBeDVOTGo5SUJUN1piZw?oc=5" target="_blank" rel="noopener">[기고] 2025년 글로벌 테크기업의 오피스 인테리어 트렌드는?</a></h2>
+          <div class="byline">동아일보 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMib0FVX3lxTE5pTWduQy1RX3ZsekNjem5YM3ZOY2RsTWxqYldINDFqNHVlaWR1Mm93Vkc1dXhlajNqY0RtYzhXQXNRdnhVQXJONFppOW94UEJIYzRXak9OYmVrdm4wbGtPZHE2Q2NlcG9JWTRsMkZqc9IBZkFVX3lxTE1rVW1fT0pXSkhoYVM0SWRCNzJkTkhuV04zR2huUl9idkRCMGhLNTh1WXVxYm9zcUZ6SzIzSTZrUFlseDBHeWtJNFlYajAwYXpTc1BNMXZndjJBeDVOTGo5SUJUN1piZw?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">구글, 메타, 애플 같은 글로벌 테크 기업들이 2025년 사옥을 어떻게 꾸미고 있는지를 다룬 기사입니다. 협업 공간을 더 늘리되 개인 휴식 공간도 함께 확보하고, 웰니스(건강)와 지속가능성을 모두 담으려는 트렌드가 보이고 있습니다.</p>
+          <p class="insight">테크 기업들이 사무실을 &#x27;일만 하는 곳&#x27;에서 &#x27;웰니스를 경험하는 곳&#x27;으로 재해석하고 있다는 건, 퍼시스의 새로운 프로젝트 제안에도 반영할 만한 방향이 아닐까 싶습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="일룸" data-type="external">
+        <div class="entry-num">08</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">일룸</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTFB6cDU0YWZIRnB4WE9EblZITGNZTlk4WlVsLUUxWjlILWVXbXJHelZMLVcySDdkcHhxYmx6cUxTS1JKUjRFWXAzVWFuREpRSVdMMWQ4SnB4aUtzY05nQlltUFZ2amZMM19J?oc=5" target="_blank" rel="noopener">&quot;집은 나를 담는 그릇&quot;…2026년 1인가구 인테리어 5대 트렌드</a></h2>
+          <div class="byline">데일리팝 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiaEFVX3lxTFB6cDU0YWZIRnB4WE9EblZITGNZTlk4WlVsLUUxWjlILWVXbXJHelZMLVcySDdkcHhxYmx6cUxTS1JKUjRFWXAzVWFuREpRSVdMMWQ4SnB4aUtzY05nQlltUFZ2amZMM19J?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">1인가구가 &#x27;내 취향이 드러나는 공간&#x27;을 만드는 데 집중하면서 2026년 인테리어 트렌드가 확실히 달라지고 있습니다. 미니멀하면서도 개성 있고, 실용성과 감성을 동시에 담는 방향으로 움직이고 있습니다.</p>
+          <p class="insight">1인가구 시장이 이제 &#x27;싸고 편한 가구&#x27;보다 &#x27;나를 표현하는 가구&#x27;를 찾는 단계로 진화했다는 게 흥미롭네요. 우리 일룸의 디자인과 큐레이션이 정말 &#x27;개성&#x27;을 담아내고 있는지가 차별점이 될 것 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="일룸" data-type="external">
+        <div class="entry-num">09</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">일룸</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE9SWXBIT1NYVmJDUHEzRjNuX21LZHJCeFZndmdoWVN4Z2VPY25sWkRQVUZsaF9LaWNoZnRBY0laNTVHOF96bTRlRXEtRW1lQmxaU0hUZVlMM1RJMk5ra2phUFBJMVcwY09mR2dFcA?oc=5" target="_blank" rel="noopener">[뉴스락 특별기획] 전통 가구사의 추락과 플랫폼의 역습</a></h2>
+          <div class="byline">뉴스락 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMibEFVX3lxTE9SWXBIT1NYVmJDUHEzRjNuX21LZHJCeFZndmdoWVN4Z2VPY25sWkRQVUZsaF9LaWNoZnRBY0laNTVHOF96bTRlRXEtRW1lQmxaU0hUZVlMM1RJMk5ra2phUFBJMVcwY09mR2dFcA?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">전통 오프라인 가구 회사들이 시장에서 밀려나면서 쿠팡, 네이버 같은 플랫폼이 가구 판매·배송·설치를 한 번에 제공하는 방식으로 재편되고 있습니다. 고객은 편해지지만 전통 가구사의 마진율이 급격히 압박받고 있는 상황입니다.</p>
+          <p class="insight">플랫폼에 종속되는 것도 위험하고 독립적으로 나가는 것도 어려운 시점인데, 우리가 온라인·오프라인을 동시에 강화하면서 얼마나 자율성을 유지할 수 있을지가 남은 과제처럼 느껴집니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="슬로우베드" data-type="external">
+        <div class="entry-num">10</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">슬로우베드</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBnUFBQQU53VF9rcHhZaDNvQjU5YW9WMGpleC1zSXdfdmZzamIxcnZNbG5qYkp3OHRVSlh3SjY2SjJ0WmYyNXg3OVVaMjZSLWhrbFpVVlpPckZkQdIBVEFVX3lxTE45Tm1maHBEeVVVRVQwMHlUNzJkOVBaczlfamliN3M0Wm9QVDUwUWRERlY0RGNadDJqRS1HREZoNGZ3WDN1dVRaWTJJME5YdThuV2FJeQ?oc=5" target="_blank" rel="noopener">침대는 가구 아니라 &#x27;렌털&#x27;…뜨거운 매트리스 전쟁</a></h2>
+          <div class="byline">한국경제 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTFBnUFBQQU53VF9rcHhZaDNvQjU5YW9WMGpleC1zSXdfdmZzamIxcnZNbG5qYkp3OHRVSlh3SjY2SjJ0WmYyNXg3OVVaMjZSLWhrbFpVVlpPckZkQdIBVEFVX3lxTE45Tm1maHBEeVVVRVQwMHlUNzJkOVBaczlfamliN3M0Wm9QVDUwUWRERlY0RGNadDJqRS1HREZoNGZ3WDN1dVRaWTJJME5YdThuV2FJeQ?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">침대·매트리스 시장이 기존 &#x27;구매&#x27; 개념에서 &#x27;렌털·구독&#x27; 모델로 빠르게 이동하고 있습니다. 사용자들이 시간에 따라 필요한 매트리스를 바꾸고 싶어 하면서, 소유가 아닌 경험과 유연성을 중시하는 변화가 일어나고 있습니다.</p>
+          <p class="insight">침대가 더 이상 &#x27;한 번 사면 10년 쓰는 가구&#x27;가 아니라 &#x27;필요에 따라 바꾸는 서비스&#x27;가 되고 있다는 게 흥미롭네요. 슬로우베드가 품질 프리미엄만 강조할 게 아니라 유연한 사용 경험까지 생각해야 할 시점 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="퍼시스" data-type="internal">
+        <div class="entry-num">11</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-internal">자사 소식</span><span class="sep">·</span><span class="brand">퍼시스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE9Fa1R2d1JGUVlES3gxOUkyS2NIa3F0T2NPaks4bTB3VWZlOWcyalNfMUtvZ0l2VWs5RVlVQW9WeGRHRGNfUnhDdExWV0xNMF9LM193OElXRlBhUdIBVEFVX3lxTE1fT1dXLV9sWWVWSWRSSVZqOE1kaTh2QXVvNkJMS2xHeUZsUFU3Vm96X1ZUaFFfME9nTmJ5MWozWU9uOGFNejJzMWUySGU4VjJHd3VaSQ?oc=5" target="_blank" rel="noopener">퍼시스, 베트남 호치민에 쇼룸 및 오피스 개소... 동남아 시장 공략 본격화</a></h2>
+          <div class="byline">한국경제 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiWkFVX3lxTE9Fa1R2d1JGUVlES3gxOUkyS2NIa3F0T2NPaks4bTB3VWZlOWcyalNfMUtvZ0l2VWs5RVlVQW9WeGRHRGNfUnhDdExWV0xNMF9LM193OElXRlBhUdIBVEFVX3lxTE1fT1dXLV9sWWVWSWRSSVZqOE1kaTh2QXVvNkJMS2xHeUZsUFU3Vm96X1ZUaFFfME9nTmJ5MWozWU9uOGFNejJzMWUySGU4VjJHd3VaSQ?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">퍼시스가 베트남 호치민에 쇼룸과 오피스를 동시에 개소하며 동남아 시장 공략을 본격화했습니다. 현지 거점을 확보함으로써 B2B 영업과 마케팅 기반을 마련한 것으로 보입니다.</p>
+          <p class="insight">아직 한국 기업 중 오피스가구 선수가 많지 않은 동남아에서 퍼시스가 먼저 깃발을 꽂은 셈이네요. 3~5년 뒤 동남아 시장 지형이 어떻게 변할지 한번 지켜볼 만합니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="일룸" data-type="internal">
+        <div class="entry-num">12</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-internal">자사 소식</span><span class="sep">·</span><span class="brand">일룸</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBGVy1UQTJTSGl4b0ZKOUczYmtDdUZZN1hjUjRVYUdFMFhwTEZQT04ySUFRRXpybjVXWVh6R0lvNlBST2pqcjhnck9xTXhjdjZtYzhzbEc3STZPUWh4?oc=5" target="_blank" rel="noopener">일룸, 변우석·최대훈 손잡고 &#x27;모션–문제가 있었다&#x27; 캠페인 전개</a></h2>
+          <div class="byline">뉴스1 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBGVy1UQTJTSGl4b0ZKOUczYmtDdUZZN1hjUjRVYUdFMFhwTEZQT04ySUFRRXpybjVXWVh6R0lvNlBST2pqcjhnck9xTXhjdjZtYzhzbEc3STZPUWh4?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">일룸이 배우 변우석과 최대훈을 캠페인 모델로 하여 &#x27;모션–문제가 있었다&#x27; 캠페인을 전개했습니다. 모션가구 시장에서의 브랜드 리더십을 강화하려는 마케팅 활동입니다.</p>
+          <p class="insight">모션데스크를 &#x27;번아웃 솔루션&#x27;으로 프레이밍한 게 재미있네요. 단순히 &#x27;높이 조절되는 책상&#x27;이 아니라 &#x27;내 건강을 챙기는 라이프스타일&#x27;로 포지셔닝한 거 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="레터스" data-type="internal">
+        <div class="entry-num">13</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-internal">자사 소식</span><span class="sep">·</span><span class="brand">레터스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMia0FVX3lxTFBZQ1phMzFva0V4XzFkV0YteUM5TzFmNTlCR2paMzk5T21yZG5vN1hvVmNENVY4VTBrSmhtci1VZ080aDJvcTMtYm9tYlhjRUVVS011Si1jcXFkMWtITmlKSVdWS1hTVEdzajZZ?oc=5" target="_blank" rel="noopener">‘설치 물류 28년’ 레터스, 업계 1위 성장 활로 찾았다</a></h2>
+          <div class="byline">물류신문 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMia0FVX3lxTFBZQ1phMzFva0V4XzFkV0YteUM5TzFmNTlCR2paMzk5T21yZG5vN1hvVmNENVY4VTBrSmhtci1VZ080aDJvcTMtYm9tYlhjRUVVS011Si1jcXFkMWtITmlKSVdWS1hTVEdzajZZ?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">퍼시스 물류 계열사 레터스가 28년간 쌓은 설치·물류 노하우를 바탕으로 업계 성장의 활로를 찾았다는 기사. 통합 가구 솔루션으로 포지셔닝하며 기존 물류 전문 역할에서 한 단계 업그레이드하는 중.</p>
+          <p class="insight">레터스가 &#x27;설치 물류만 하는 회사&#x27;에서 &#x27;가구 솔루션 제공사&#x27;로 진화하는 모습이 흥미롭네요. 고객 입장에선 구매부터 배치, 유지보수까지 한 곳에서 해결되니까 좋을 것 같아요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="퍼시스" data-type="internal">
+        <div class="entry-num">14</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-internal">자사 소식</span><span class="sep">·</span><span class="brand">퍼시스</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE9PcFQzOHdadFl1WDh0dVdET2QyZkU5V28tU2FjSzR5X0VaSDZCbHRHNU9JcXNZVk4zZ2Y1a2ZWMlhKWl81ZWtpVG1FcGlZMVRWWDlnTlhYVVczSWk0NVRYWA?oc=5" target="_blank" rel="noopener">퍼시스, 신제품 로비형 소파 &#x27;리노라&#x27; 시리즈 출시</a></h2>
+          <div class="byline">아시아경제 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE9PcFQzOHdadFl1WDh0dVdET2QyZkU5V28tU2FjSzR5X0VaSDZCbHRHNU9JcXNZVk4zZ2Y1a2ZWMlhKWl81ZWtpVG1FcGlZMVRWWDlnTlhYVVczSWk0NVRYWA?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">퍼시스가 로비·현관 공간용 신제품 소파 &#x27;리노라&#x27; 시리즈를 출시했습니다. 사무공간의 첫인상을 담당하는 로비 영역에 고급스럽고 편안한 경험을 제공하려는 제품입니다.</p>
+          <p class="insight">요즘 사무실은 &#x27;일하는 공간&#x27;을 넘어 &#x27;경험하는 공간&#x27;으로 변하고 있는데, 로비부터 그 가치를 느끼게 하려는 퍼시스의 전략이 보이네요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="" data-type="ai">
+        <div class="entry-num">15</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBYNG1qWmZuaVVVOW5GTFg4d1RLVmpGWVFaakpDN2JpMnVTOUcwcmVUZEpCakg1QzNHdm9BdG5IWW1xNzJVV0F0TjJlU1ZoeEpCeTdYYlg5ZWlJdlF5WFVDXzMzQVVWUTVPb3c?oc=5" target="_blank" rel="noopener">앤트로픽, 올인원 디자인 도구 ‘클로드 디자인’ 공개...어도비·캔바 위협</a></h2>
+          <div class="byline">AI타임스 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTFBYNG1qWmZuaVVVOW5GTFg4d1RLVmpGWVFaakpDN2JpMnVTOUcwcmVUZEpCakg1QzNHdm9BdG5IWW1xNzJVV0F0TjJlU1ZoeEpCeTdYYlg5ZWlJdlF5WFVDXzMzQVVWUTVPb3c?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">AI 회사 앤트로픽이 &#x27;Claude Design&#x27;이라는 올인원 디자인 도구를 공개했습니다. 그래픽 생성, 프로토타입, 협업까지 한 곳에서 할 수 있어 Adobe와 Canva 같은 기존 업체들에 위협이 되고 있습니다. 한 번에 여러 일을 하는 AI의 통합력이 산업 구도를 바꿔놓고 있습니다.</p>
+          <p class="insight">전문화된 도구들이 많던 디자인 시장이 &#x27;AI 한 개가 다 한다&#x27;는 방향으로 집중되고 있네요. 이게 결국 디자이너들이 원하는 방향일까요?</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="" data-type="ai">
+        <div class="entry-num">16</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMihwFBVV95cUxOenloZ0hiQXlqTWpNZUNTZDJZTTRwZS1Yc091R1hOT3FTeEpaZkQxWk9TdHdlT2dubnRidzZEaXVpWWUwM0JwbGI2MnBvMmxGVWk5Q1VkaHVrRWZxM0dGb2xHNjFYTlE3QjJIYVJsdVI5SUhNd19GUEVIb0pCbDJsYVBqdGRuLVk?oc=5" target="_blank" rel="noopener">에이전트를 내재화한 앤트로픽 클로드 모델 신기능: Computer Use, Dispatch, Auto Mode</a></h2>
+          <div class="byline">네이버 프리미엄콘텐츠 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMihwFBVV95cUxOenloZ0hiQXlqTWpNZUNTZDJZTTRwZS1Yc091R1hOT3FTeEpaZkQxWk9TdHdlT2dubnRidzZEaXVpWWUwM0JwbGI2MnBvMmxGVWk5Q1VkaHVrRWZxM0dGb2xHNjFYTlE3QjJIYVJsdVI5SUhNd19GUEVIb0pCbDJsYVBqdGRuLVk?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">앤트로픽의 클로드 AI가 새로운 기능들을 추가했다. &#x27;컴퓨터 유즈&#x27;(AI가 마우스·키보드처럼 화면을 직접 조작), &#x27;디스패치&#x27;(여러 작업을 동시에 처리), &#x27;오토 모드&#x27;(자동으로 판단해서 일 처리)가 핵심. 개발자뿐 아니라 일반 사무 업무도 대폭 자동화할 수 있게 된 셈.</p>
+          <p class="insight">AI가 이제 &#x27;생각&#x27;만 하는 게 아니라 &#x27;손가락처럼 움직여서&#x27; 우리가 하는 반복 업무를 직접 해줄 수 있다는 게 와닿네요. 엑셀 정리, 이메일 답장 같은 일들이 어떻게 바뀔지 궁금해집니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="" data-type="ai">
+        <div class="entry-num">17</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMihgFBVV95cUxPdjVBVlBGZ2MwUUpnOUpaZGJvSms2bDFxSXNhcVFXRS1LZWd1RG5JYnZnVGpvRlB5dThpakg2YWNnelUydFFHQmI2cWhyWEd5aFBMd29EclhJOWRtMzJwbGhUeDhON3NpVmJFUE5va1UtYUdCLS1mdTVZMnhxd3ROOXV4dnpnZw?oc=5" target="_blank" rel="noopener">OpenAI는 &quot;새로운 차원의 지능&quot;을 갖춘 새로운 AI 모델을 발표했습니다.</a></h2>
+          <div class="byline">Vietnam.vn · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMihgFBVV95cUxPdjVBVlBGZ2MwUUpnOUpaZGJvSms2bDFxSXNhcVFXRS1LZWd1RG5JYnZnVGpvRlB5dThpakg2YWNnelUydFFHQmI2cWhyWEd5aFBMd29EclhJOWRtMzJwbGhUeDhON3NpVmJFUE5va1UtYUdCLS1mdTVZMnhxd3ROOXV4dnpnZw?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">OpenAI가 새로운 차원의 지능을 갖춘 AI 모델을 발표했다. 기존보다 더 복잡한 문제를 풀 수 있고, 여러 단계의 추론 능력이 향상되었다는 평가.</p>
+          <p class="insight">ChatGPT, Claude 이런 도구들이 계속 똑똑해지고 있으니, 우리 일에서 AI를 어떻게 &#x27;당연하게&#x27; 쓸지 미리 생각해둬도 좋을 것 같아요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="" data-type="ai">
+        <div class="entry-num">18</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTE5BUHhSZmQxY3dCX1Y1S2JOdlVMVVRPRW5zUDlEMFZJN3YyRUdsNkdHMlJMYUhhM2FYbVZ6YUdyblprWkdfUWVGTVFsN0kwOWxFemkwbHFSOGkxSWp0NnhB?oc=5" target="_blank" rel="noopener">中 AI 기업의 조직적 데이터 탈취...앤트로픽 ‘클로드’ 표적</a></h2>
+          <div class="byline">보안뉴스 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiX0FVX3lxTE5BUHhSZmQxY3dCX1Y1S2JOdlVMVVRPRW5zUDlEMFZJN3YyRUdsNkdHMlJMYUhhM2FYbVZ6YUdyblprWkdfUWVGTVFsN0kwOWxFemkwbHFSOGkxSWp0NnhB?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">중국의 AI 기업들이 앤트로픽의 클로드 AI 데이터를 조직적으로 탈취하려는 시도를 한 것으로 드러났다. AI 모델의 지적재산권 보호 문제가 심화되고 있다.</p>
+          <p class="insight">AI 기술이 전략적 자산이 되면서, 데이터와 모델 보안이 예전의 공장 기술 보안처럼 중요해지는 시대네요. 흥미로운 변화입니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="퍼시스,레터스" data-type="external">
+        <div class="entry-num">19</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스 · 레터스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE1qRUJqQjNxNlJ5aWVZQW9NRWpWNFFzdHN6Zzc2S2lzTWJSREx4M29ubFREaEF5MVI1MU1YeGFLYnVSWmoxUmw3TkEyMTVpdXRnZ0JLWDA4QXdMcnVGWEE2Q9IBeEFVX3lxTE1Tc2tDZlE4MmZ2UlRTX3RkU05HaElQZHBMUXp5UHJ0amdPMm4tY2pkeHhfYWg5WnRLZWplUjRrTHpaX0VVdVJZR3QyNS1DcDdNcEZTSlZKaHBwUGpPeWFiT2MyOHo1cVJJTGpUS25IRTJHNThOZjFyMA?oc=5" target="_blank" rel="noopener">[현장] 삼양식품, &#x27;불닭볶음면 발상지&#x27; 명동에 新사옥 열어 &quot;글로벌 영토 확장 본격화&quot;</a></h2>
+          <div class="byline">뉴시스 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE1qRUJqQjNxNlJ5aWVZQW9NRWpWNFFzdHN6Zzc2S2lzTWJSREx4M29ubFREaEF5MVI1MU1YeGFLYnVSWmoxUmw3TkEyMTVpdXRnZ0JLWDA4QXdMcnVGWEE2Q9IBeEFVX3lxTE1Tc2tDZlE4MmZ2UlRTX3RkU05HaElQZHBMUXp5UHJ0amdPMm4tY2pkeHhfYWg5WnRLZWplUjRrTHpaX0VVdVJZR3QyNS1DcDdNcEZTSlZKaHBwUGpPeWFiT2MyOHo1cVJJTGpUS25IRTJHNThOZjFyMA?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">삼양식품이 &#x27;불닭볶음면 발상지&#x27; 명동에 새로운 사옥을 열고 글로벌 영토 확장을 본격화했다. 성장 기업들이 상징적인 위치에서 사무공간을 확대하는 트렌드다.</p>
+          <p class="insight">한국 식품 스타트업이 글로벌로 성장할 때 명동 같은 상징적 공간을 차지한다는 게 흥미롭네요. 이런 성장 기업들의 사무실 이전·설계 수요가 우리 고객이 될 수 있겠다는 생각이 드네요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-29" data-brands="퍼시스,레터스" data-type="external">
+        <div class="entry-num">20</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스 · 레터스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTFBPckI5OFNLNTJLT2g2bXZpXzFCNDNzU3ZFbUk4VlQtUTdacVJkal9NcXdzYjZKRUw2OC1vdktOZHZBYUg3T1BtYmlfZWlGd28?oc=5" target="_blank" rel="noopener">[2025 리그테이블] [부동산] SK가 또 사옥을 팔았다…대기업 리츠 활용 트렌드</a></h2>
+          <div class="byline">딜사이트 · 04.29 수 · <a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTFBPckI5OFNLNTJLT2g2bXZpXzFCNDNzU3ZFbUk4VlQtUTdacVJkal9NcXdzYjZKRUw2OC1vdktOZHZBYUg3T1BtYmlfZWlGd28?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">SK 등 대기업들이 사옥을 매각하고 리츠(부동산 투자신탁)를 활용하는 추세가 늘어나고 있다. 기업들이 소유에서 임차 중심으로 오피스 전략을 바꾸고 있다는 신호다.</p>
+          <p class="insight">대기업도 사옥을 안 갖고 빌려 쓰는 시대가 온다면, 오피스 가구와 인테리어 리뉴얼 수요는 더 자주, 더 빠르게 생길 수밖에 없을 것 같아요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-28" data-brands="퍼시스" data-type="external">
+        <div class="entry-num">01</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiggFBVV95cUxPdEdGWkJVcnljU0VvZkdyVjRPM3RCY3NmMno5LXV2S1VCMFJPQmI2TjZPRks3cDZJcnJfLWdnY2JZSTJVOHlaRmR5UU1XVmlIUUxybV91UWNBT0Z6Y1hyZ05jQmROTFlUMEFmUVdqcmk1dnBVZmFPSlBvWEVpWG5neHlR0gGWAUFVX3lxTE96dnprSEx1LTdqLXdDWUxSTE14T0VaZjI0dEd5WXpReXZSM3NLU09mdWkzQjNjMUhPUFBMVjBTMThmeTBBQUtEWk9vTVNWdmM3MUoxUmlWX3lwY3p0MHgxS2pNLWRqUnEtWnpyUUVpS0owbjJHZzRsZUYzUjlNOHVzLXljY0pQR1RUUGVEcmlIMDZBTldaQQ?oc=5" target="_blank" rel="noopener">HP, 차세대 AI PC·워크스테이션 공개… ‘에이전트 AI 시대’ 주도 - 조선비즈</a></h2>
+          <div class="byline">Chosunbiz · 04.28 화 · <a href="https://news.google.com/rss/articles/CBMiggFBVV95cUxPdEdGWkJVcnljU0VvZkdyVjRPM3RCY3NmMno5LXV2S1VCMFJPQmI2TjZPRks3cDZJcnJfLWdnY2JZSTJVOHlaRmR5UU1XVmlIUUxybV91UWNBT0Z6Y1hyZ05jQmROTFlUMEFmUVdqcmk1dnBVZmFPSlBvWEVpWG5neHlR0gGWAUFVX3lxTE96dnprSEx1LTdqLXdDWUxSTE14T0VaZjI0dEd5WXpReXZSM3NLU09mdWkzQjNjMUhPUFBMVjBTMThmeTBBQUtEWk9vTVNWdmM3MUoxUmlWX3lwY3p0MHgxS2pNLWRqUnEtWnpyUUVpS0owbjJHZzRsZUYzUjlNOHVzLXljY0pQR1RUUGVEcmlIMDZBTldaQQ?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">HP가 차세대 AI PC와 워크스테이션을 공개하며 &#x27;에이전트 AI 시대&#x27;를 주도하겠다고 선언했습니다. AI 에이전트란 사용자의 지시를 받아 스스로 판단해서 일을 처리하는 AI 도구를 말하는데, PC 자체가 더 똑똑해지면서 업무 환경도 달라질 것으로 예상됩니다. 이는 오피스 공간과 사무가구 설계에도 영향을 미칠 가능성이 있습니다.</p>
+          <p class="insight">AI PC 시대가 본격화되면 사람들이 사무실에서 뭘 하는지, 어떤 공간이 필요한지가 달라질 텐데요. 지금처럼 &#x27;일정한 자리에서 앉아서 일하는&#x27; 모델이 계속될지, 아니면 AI한테 일을 맡기고 다른 형태의 업무 공간이 필요해질지 궁금해집니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-28" data-brands="레터스" data-type="external">
+        <div class="entry-num">02</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">레터스</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMifEFVX3lxTE5HcXVhaHdSczdKNElUVVZ1Z3Zma0xJNTZuRmtWdUhheGs5TkIwdExfTlFaVDNXc1YydXdQNW9xaEg4YnFXZXhBbzd1aGwxZ00xNkppd0RGQWFXbC1pNkRnNXQ2Q0czMF9qMnc5QW82V3VDRlJ5Y2NabUpwUlQ?oc=5" target="_blank" rel="noopener">GS25·CU 등 ‘퀵커머스’ 재점화…배달앱과 라스트마일 전면전</a></h2>
+          <div class="byline">빅데이터뉴스 · 04.28 화 · <a href="https://news.google.com/rss/articles/CBMifEFVX3lxTE5HcXVhaHdSczdKNElUVVZ1Z3Zma0xJNTZuRmtWdUhheGs5TkIwdExfTlFaVDNXc1YydXdQNW9xaEg4YnFXZXhBbzd1aGwxZ00xNkppd0RGQWFXbC1pNkRnNXQ2Q0czMF9qMnc5QW82V3VDRlJ5Y2NabUpwUlQ?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">편의점 라스트마일(마지막 배송 구간) 서비스가 재점화되며 배달앱과의 경쟁이 심화되고 있습니다. GS25, CU 등이 빠른 배송 경쟁에 뛰어들면서 &#x27;얼마나 빨리 도착하느냐&#x27;가 경쟁의 중심이 되고 있습니다. 가구 같은 대형 상품의 배송·설치 로직과는 다른 시장이지만, 소비자들의 &#x27;빠른 배송&#x27; 기대치는 점점 높아지는 추세입니다.</p>
+          <p class="insight">편의점까지 라스트마일 전쟁에 뛰어들 정도면, 일룸이나 다른 가구 이커머스도 배송 속도 압박을 피할 수 없을 것 같은데요. 가구는 배송 외에도 설치 조율이 있어서 다른 세계긴 하지만, 고객들이 &#x27;왜 우리는 이렇게 오래 걸리지?&#x27;라고 물어보는 시대가 오는 거 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-28" data-brands="레터스" data-type="external">
+        <div class="entry-num">03</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">레터스</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMia0FVX3lxTFBmMngxenBBZFpIZE1FUWcza2Q1Wm1UOVFKTGhCQi01WnBWX2JrNlpQVWttQlpSa1Z2TWZKVzJldE1sQzlFM0MybXdaaDBUenAwUk9ZNEpsSDNKTmNUbDU1a1RKQ3hQZzVDN0J3?oc=5" target="_blank" rel="noopener">쿠팡풀필먼트서비스, 물류현장 맞춤 ‘VR 안전교육’ 진행</a></h2>
+          <div class="byline">물류신문 · 04.28 화 · <a href="https://news.google.com/rss/articles/CBMia0FVX3lxTFBmMngxenBBZFpIZE1FUWcza2Q1Wm1UOVFKTGhCQi01WnBWX2JrNlpQVWttQlpSa1Z2TWZKVzJldE1sQzlFM0MybXdaaDBUenAwUk9ZNEpsSDNKTmNUbDU1a1RKQ3hQZzVDN0J3?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">쿠팡풀필먼트서비스가 물류 현장의 안전 문화를 개선하기 위해 VR 안전교육을 시작했습니다. 360도 가상현실에서 실제 사고 상황을 체험하며 위험을 직관적으로 배우는 방식입니다. 산업 전반에 고급 교육 기술을 도입하는 추세를 보여줍니다.</p>
+          <p class="insight">물류 현장이 VR로 교육받는 시대가 왔네요. 우리 레터스의 배송 및 설치팀도 안전 교육을 하고 있을 텐데, 이렇게 새로운 방식이 나오면 &#x27;우리도 저렇게 할 수 있을까?&#x27; 하는 자연스러운 궁금증이 생깁니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-28" data-brands="레터스" data-type="external">
+        <div class="entry-num">04</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">레터스</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMib0FVX3lxTFBsS3hBRGxXRHlmOEViNExVMEpqN3dRLTRyeVdyQ21HekVTTnFvcWR4cFRNM1FtYzRpNE5xYUpLSHlQS1FOVlQyQXZPUEd4eDBfT2FIbm1WRl9EMkRfSWd2d0pxVURiSkoya3VjODJsSdIBc0FVX3lxTE5rdmtpMDJUY2lJYlZoeEx1Nl9uQU85TlZtRUM2bkl5cDFzVVNMOU9ZSzU2VWlDWmt4WVUxc0U0RkhSZl96U3JvelhXXzNmN09SNkx3Yng2TWtscVM5MEFCUXZuVDFPb1JnZ3RDNi05b21OWU0?oc=5" target="_blank" rel="noopener">클로봇, 경북 물류·이송 AI+로봇 플래그십 실증 완료…상용화 단계 진입</a></h2>
+          <div class="byline">데일리한국 · 04.28 화 · <a href="https://news.google.com/rss/articles/CBMib0FVX3lxTFBsS3hBRGxXRHlmOEViNExVMEpqN3dRLTRyeVdyQ21HekVTTnFvcWR4cFRNM1FtYzRpNE5xYUpLSHlQS1FOVlQyQXZPUEd4eDBfT2FIbm1WRl9EMkRfSWd2d0pxVURiSkoya3VjODJsSdIBc0FVX3lxTE5rdmtpMDJUY2lJYlZoeEx1Nl9uQU85TlZtRUM2bkl5cDFzVVNMOU9ZSzU2VWlDWmt4WVUxc0U0RkhSZl96U3JvelhXXzNmN09SNkx3Yng2TWtscVM5MEFCUXZuVDFPb1JnZ3RDNi05b21OWU0?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">클로봇이 경북에서 AI와 로봇을 활용한 물류·이송 시스템의 대규모 실증을 완료하고 상용화 단계에 들어섰습니다. 창고에서 상품을 옮기고 분류하는 일을 로봇이 자동으로 처리하는 기술입니다. 가구 같은 대형 물류는 자동화가 더 어렵지만, 물류 산업 전반의 로봇화 추세는 피할 수 없게 됐습니다.</p>
+          <p class="insight">가구 배송은 무겁고 복잡해서 로봇 자동화가 어렵다고 알려져 있는데, 경쟁사들이 AI 로봇에 투자해서 비용을 낮추기 시작하면 우리도 뭔가 다른 방식의 효율화를 생각해야 하지 않을까 싶네요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-28" data-brands="시디즈" data-type="internal">
+        <div class="entry-num">05</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-internal">자사 소식</span><span class="sep">·</span><span class="brand">시디즈</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiUEFVX3lxTE5xYnFZanVMcE91T201bHp5SkJUbFl4QjVVVGdSTXFpVmJIMlRyTDdhOHBTblBaTDU1a0JmY2FWdW4tVWk0RTVxTzJiTUhlaks1?oc=5" target="_blank" rel="noopener">MK Pick | 시디즈, 듀얼-텐션 서포트 등판 적용한 게이밍의자 ‘GX’ 리뉴얼 출시</a></h2>
+          <div class="byline">매일경제 · 04.28 화 · <a href="https://news.google.com/rss/articles/CBMiUEFVX3lxTE5xYnFZanVMcE91T201bHp5SkJUbFl4QjVVVGdSTXFpVmJIMlRyTDdhOHBTblBaTDU1a0JmY2FWdW4tVWk0RTVxTzJiTUhlaks1?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">시디즈가 &#x27;듀얼-텐션 서포트 등판&#x27; 기술을 적용한 게이밍의자 &#x27;GX&#x27;를 리뉴얼해 출시했습니다. 등판이 등과 허리를 분리해서 지탱해 더 나은 자세 지원을 제공하는 신기술입니다. 게이밍 의자 시장에서 기술 혁신으로 차별화를 강화하고 있습니다.</p>
+          <p class="insight">게이밍의자도 단순히 &#x27;편한 의자&#x27;가 아니라 &#x27;자세 과학&#x27;이 들어가는 제품이 되고 있네요. 장시간 앉아있는 문화가 갈수록 보편화되는 만큼, 시디즈가 이렇게 기술로 구분 짓는 움직임이 자연스럽고 좋아 보입니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-28" data-brands="" data-type="ai">
+        <div class="entry-num">06</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE9MV09jTkw0MllyenNsXzdIel9xNkF4QzNjdWRvc2t2c1czbDA0UU5JdWlxaUNYbkt5Qm5EUHRVWi0yd2FBd0ZkT1hWTFBvcFFNM1pUVVNxUlktNFFUNHBjc0xIVTRvUHhuMVE?oc=5" target="_blank" rel="noopener">스페이스X, AI 코딩기업 &#x27;커서&#x27; 600억불 인수 계약</a></h2>
+          <div class="byline">중기이코노미 · 04.28 화 · <a href="https://news.google.com/rss/articles/CBMiakFVX3lxTE9MV09jTkw0MllyenNsXzdIel9xNkF4QzNjdWRvc2t2c1czbDA0UU5JdWlxaUNYbkt5Qm5EUHRVWi0yd2FBd0ZkT1hWTFBvcFFNM1pUVVNxUlktNFFUNHBjc0xIVTRvUHhuMVE?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">스페이스X가 AI 코딩 기업 Cursor를 약 600억 달러에 인수하려는 계약을 체결했습니다. Cursor는 AI 기술로 소프트웨어 개발을 자동화·고속화하는 도구입니다. 기술 대기업들이 AI 코딩 도구에 막대한 자본을 투입하며 개발 생태계가 급변하고 있음을 시사합니다.</p>
+          <p class="insight">스페이스X 같은 회사가 600억 달러를 쓸 정도면, AI 코딩 도구가 단순 편의 기술이 아니라 산업 구조 자체를 바꾼다는 뜻이겠네요. 우리 회사도 디지털 전환 중인데, 이런 개발 도구의 진화가 그 속도를 훨씬 빠르게 할 가능성이 있어 보입니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-27" data-brands="일룸,알로소,슬로우베드,레터스" data-type="external">
+        <div class="entry-num">01</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">일룸 · 알로소 · 슬로우베드 · 레터스</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiU0FVX3lxTFBMYzZPeS1KUmVHaDZMV1E1NG42ZHFfUnJHREFvemhVOVNnZDQtX2dXejlTazF3ZGVhcG9qYW43cVJYSkZnZVI5Z21wWGxWWXRSenRR?oc=5" target="_blank" rel="noopener">서울, 초고령사회 진입…&#x27;시니어주택&#x27; 1만2천 가구 공급</a></h2>
+          <div class="byline">네이트 · 04.27 월 · <a href="https://news.google.com/rss/articles/CBMiU0FVX3lxTFBMYzZPeS1KUmVHaDZMV1E1NG42ZHFfUnJHREFvemhVOVNnZDQtX2dXejlTazF3ZGVhcG9qYW43cVJYSkZnZVI5Z21wWGxWWXRSenRR?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">서울이 초고령사회에 진입하면서 시니어주택 1만2천 가구 공급 계획이 나왔습니다. 고령층을 위한 주거공간 증가는 안전성, 접근성, 편의성을 고려한 가구와 인테리어 수요 급증을 의미합니다. 배송·시공 역량도 함께 필요해지는 시장입니다.</p>
+          <p class="insight">시니어 주택이 대량 공급되면, 일반 가구랑 다르게 안전손잡이, 낮은 높이, 넘어지지 않는 설계 같은 특화 수요가 터질 텐데요. 이미 준비하고 있는 브랜드들의 움직임이 궁금해집니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-27" data-brands="레터스" data-type="external">
+        <div class="entry-num">02</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">레터스</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMibkFVX3lxTE81cGhNUUFWNWZmTUkyZ0RjQjNoTVo5eXE0NEFtTkpyY2JEMUlhSnh0SVAzY0h6YUttTEpjMGdvU2c4U3JjdFFaTVJwcHQxMDRsVFpfbUZweTBPNzAzYWR3OTlwaXNzYUtzalhUaVdn?oc=5" target="_blank" rel="noopener">“물류센터 사고, VR로 겪고 막는다”... 쿠팡풀필먼트서비스, 실전 안전교육 실시</a></h2>
+          <div class="byline">보안뉴스 · 04.27 월 · <a href="https://news.google.com/rss/articles/CBMibkFVX3lxTE81cGhNUUFWNWZmTUkyZ0RjQjNoTVo5eXE0NEFtTkpyY2JEMUlhSnh0SVAzY0h6YUttTEpjMGdvU2c4U3JjdFFaTVJwcHQxMDRsVFpfbUZweTBPNzAzYWR3OTlwaXNzYUtzalhUaVdn?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">쿠팡이 물류센터 안전사고 방지를 위해 VR 교육을 도입했습니다. 위험 상황을 미리 경험하게 하는 방식으로 실제 사고를 예방하는 접근입니다. 대규모 물류 운영사들이 안전에 기술 투자를 늘리는 추세입니다.</p>
+          <p class="insight">가구 배송·설치 과정도 안전사고가 중요한데, 우리 레터스·바로스도 이런 새로운 안전교육 방식을 벤치마킹해볼 만하네요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-27" data-brands="레터스" data-type="external">
+        <div class="entry-num">03</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">레터스</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE5SdGNyWHdNQ3A1TGdIOHdzMFlKQ21DaUpXREdvYi05c3ZuWHhwSDhPTGxGLVdEXzNCQ1ZYYjl3QkdjdWRiU3BBY1dCN0tRSE5TRmtsOFRIYWpscFd5NzVyQ9IBeEFVX3lxTE1Ra1JJMWw0alpEeVQ4X3VIaEtRd3l6eGhIUjRXWDhjcVJzNllXTkJLNF9zcmJlWlBuMHV6aTB4dFItY1k3c1kzMW9iNkp1WE1EWThYa0tlYmxqYmJrOUFZSk1TYWpxWkNHTEZJNkV6d05CWDIyVXl2SQ?oc=5" target="_blank" rel="noopener">클로봇, &#x27;경북 물류·이송 AI+로봇 플래그십&#x27; 실증 완료</a></h2>
+          <div class="byline">뉴시스 · 04.27 월 · <a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE5SdGNyWHdNQ3A1TGdIOHdzMFlKQ21DaUpXREdvYi05c3ZuWHhwSDhPTGxGLVdEXzNCQ1ZYYjl3QkdjdWRiU3BBY1dCN0tRSE5TRmtsOFRIYWpscFd5NzVyQ9IBeEFVX3lxTE1Ra1JJMWw0alpEeVQ4X3VIaEtRd3l6eGhIUjRXWDhjcVJzNllXTkJLNF9zcmJlWlBuMHV6aTB4dFItY1k3c1kzMW9iNkp1WE1EWThYa0tlYmxqYmJrOUFZSk1TYWpxWkNHTEZJNkV6d05CWDIyVXl2SQ?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">클로봇이 물류 이송 로봇에 AI를 결합한 플래그십 시스템 실증을 완료했습니다. 이는 로봇이 단순히 옮기는 것 넘어 주변을 인식하고 스스로 판단하며 움직일 수 있다는 뜻입니다. 상용화 단계에 들어섰다고 회사가 발표했습니다.</p>
+          <p class="insight">물류 자동화가 이제 단순 반복 작업 수준을 넘어 &#x27;생각하는 로봇&#x27; 시대로 진입하고 있네요. 우리 물류 센터들도 이런 기술과 어떻게 어울릴지 한번 상상해볼 만합니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-27" data-brands="레터스" data-type="external">
+        <div class="entry-num">04</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">레터스</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiTkFVX3lxTFBIakdEUFB2UTFneU9xcnFSQ0hMQnAxUFVfWGJaZEJzZWc2bzd5STctd0UydEpGSUdVYTRDcXJ3c091SFpnUkdSQVNoZFJHUQ?oc=5" target="_blank" rel="noopener">[생활물류 혁신] 롯데글로벌로지스, AX·DX 발판으로 &#x27;스마트 물류&#x27; 가속</a></h2>
+          <div class="byline">전자신문 · 04.27 월 · <a href="https://news.google.com/rss/articles/CBMiTkFVX3lxTFBIakdEUFB2UTFneU9xcnFSQ0hMQnAxUFVfWGJaZEJzZWc2bzd5STctd0UydEpGSUdVYTRDcXJ3c091SFpnUkdSQVNoZFJHUQ?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">롯데글로벌로지스가 AI(AX)와 데이터(DX)를 바탕으로 물류센터를 스마트화하고 있습니다. 센터 운영 효율, 배송 시간, 고객 만족도 개선을 동시에 추구하는 방식입니다. 대형 물류 회사들의 &#x27;똑똑한 물류&#x27; 경쟁이 가열되고 있습니다.</p>
+          <p class="insight">큰 물류사들이 AI로 능력을 강화하는 와중에, 우리 같은 중견 3PL 기업은 어떤 틈새나 차별점으로 고객을 붙잡을지 한번 생각해봐야겠네요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-27" data-brands="일룸,슬로우베드" data-type="internal">
+        <div class="entry-num">05</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-internal">자사 소식</span><span class="sep">·</span><span class="brand">일룸 · 슬로우베드</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBMRFZpT0JoNGd1eE95Qno3V2pJQU1GMUdRN08xa0stNGlDN2VQby1jRWlfTC1aenZ0c1FkcDE5X2hxeElYN2otbDZjczVpdWRUdl9IY1h1Vzh4S1lG?oc=5" target="_blank" rel="noopener">&quot;침대 위에서 공연·요가·영화&quot;…일룸, 성수에 &#x27;모션베드 체험&#x27; 팝업</a></h2>
+          <div class="byline">뉴스1 · 04.27 월 · <a href="https://news.google.com/rss/articles/CBMiXEFVX3lxTFBMRFZpT0JoNGd1eE95Qno3V2pJQU1GMUdRN08xa0stNGlDN2VQby1jRWlfTC1aenZ0c1FkcDE5X2hxeElYN2otbDZjczVpdWRUdl9IY1h1Vzh4S1lG?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">일룸이 성수에서 모션베드 팝업스토어 &#x27;더 모션 클럽&#x27;을 운영 중입니다. 침대 위에서 공연, 요가, 영화 감상 같은 경험을 직접 해보게 하는 체험 마케팅입니다. 단순 제품 판매를 넘어 라이프스타일 제안으로 포지셔닝하고 있습니다.</p>
+          <p class="insight">요즘 고객들이 제품 스펙보다는 &#x27;그거 사면 내 삶이 어떻게 달라질까&#x27;를 먼저 궁금해하는데, 일룸이 그걸 팝업으로 직접 보여주는 방식이 꽤 영리네요.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-27" data-brands="시디즈" data-type="internal">
+        <div class="entry-num">06</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-internal">자사 소식</span><span class="sep">·</span><span class="brand">시디즈</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMidEFVX3lxTE1zaVJhQ1NRNTU2SDRyUExaVElDVWd0ZFJkdzUwZ2dHRlplaEZFWW95UWdFX3c2T1pyLU9UM2k5YWVWY3B4NEY5dU5NdlpaYlRzZnVkcHZvM1NKTnpVSjluN1M4SFg4YlRCX3FjV1JBOGZLeHNL0gF0QVVfeXFMTXNpUmFDU1E1NTZINHJQTFpUSUNVZ3RkUmR3NTBnZ0dGWmVoRkVZb3lRZ0VfdzZPWnItT1QzaTlhZVZjcHg0Rjl1Tk12WlpiVHNmdWRwdm8zU0pOelVKOW43UzhIWDhiVEJfcWNXUkE4Zkt4c0s?oc=5" target="_blank" rel="noopener">“장시간 플레잉 전방면 뒷받침”···시디즈, 게이밍의자 ‘GX’ 출시</a></h2>
+          <div class="byline">이뉴스투데이 · 04.27 월 · <a href="https://news.google.com/rss/articles/CBMidEFVX3lxTE1zaVJhQ1NRNTU2SDRyUExaVElDVWd0ZFJkdzUwZ2dHRlplaEZFWW95UWdFX3c2T1pyLU9UM2k5YWVWY3B4NEY5dU5NdlpaYlRzZnVkcHZvM1NKTnpVSjluN1M4SFg4YlRCX3FjV1JBOGZLeHNL0gF0QVVfeXFMTXNpUmFDU1E1NTZINHJQTFpUSUNVZ3RkUmR3NTBnZ0dGWmVoRkVZb3lRZ0VfdzZPWnItT1QzaTlhZVZjcHg0Rjl1Tk12WlpiVHNmdWRwdm8zU0pOelVKOW43UzhIWDhiVEJfcWNXUkE4Zkt4c0s?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">시디즈가 게이밍의자 신제품 &#x27;GX&#x27;를 출시했습니다. 장시간 플레이 시 신체 전 부위를 지지하는 설계를 강조했습니다. 게이밍 시장 확대에 따라 전문화된 의자 라인업을 강화하는 움직임입니다.</p>
+          <p class="insight">게이밍 의자가 이제 &#x27;오타쿠 물건&#x27;에서 주류 카테고리로 올라온 걸 보면, 우리가 놓친 라이프스타일 수요가 또 뭐가 있을지 궁금해집니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-27" data-brands="" data-type="ai">
+        <div class="entry-num">07</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiywJBVV95cUxQeTk0YmEydUE3MmZVSkFKX1NWaU1OdWZSYnVFekp0elBRQlRvczlWUWRQR3NnU2doRXNvZ25TODdqTERwb3ZBcUR5ZDd2Q29iV0pjc2t4SHpsaURua3U1X3h4VzBRWWtIamVGRHF6Q3RmTXpHamlPd1kzYnYtR2NiaS03S0x3cXBRTHB3LWkwRkRmZGhkak9yQ1hzZlhSZ3RiRHdnRGRtX243dlRuSEQ5WUVmVVE3cUs3N2ZTQnhwYWVLQkNCMHd3Q0ltak51UmFfVHprcHZBRlFMRDRRU21WMnc5ZU1EM3dsRjMtdGdIaHN5OXducDZGSG93bG03blZoM3hsZVF6cEpUbXNvYUVVdFJscEl2RzNfSVFlc1Z0NU9EMTN5b2E3NWdsWEhjZmRldUdCQlNmM2dzbW9VNTRfb1U2WDFubm5xM0E4?oc=5" target="_blank" rel="noopener">“정액은 끝났다” 깃허브 코파일럿, AI 크레딧 체계 도입</a></h2>
+          <div class="byline">itworld.co.kr · 04.27 월 · <a href="https://news.google.com/rss/articles/CBMiywJBVV95cUxQeTk0YmEydUE3MmZVSkFKX1NWaU1OdWZSYnVFekp0elBRQlRvczlWUWRQR3NnU2doRXNvZ25TODdqTERwb3ZBcUR5ZDd2Q29iV0pjc2t4SHpsaURua3U1X3h4VzBRWWtIamVGRHF6Q3RmTXpHamlPd1kzYnYtR2NiaS03S0x3cXBRTHB3LWkwRkRmZGhkak9yQ1hzZlhSZ3RiRHdnRGRtX243dlRuSEQ5WUVmVVE3cUs3N2ZTQnhwYWVLQkNCMHd3Q0ltak51UmFfVHprcHZBRlFMRDRRU21WMnc5ZU1EM3dsRjMtdGdIaHN5OXducDZGSG93bG03blZoM3hsZVF6cEpUbXNvYUVVdFJscEl2RzNfSVFlc1Z0NU9EMTN5b2E3NWdsWEhjZmRldUdCQlNmM2dzbW9VNTRfb1U2WDFubm5xM0E4?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">깃허브 코파일럿(개발자 AI 어시스턴트)이 종량제 크레딧 시스템으로 변경되었습니다. 기존 정액 구독에서 &#x27;쓸 만큼 내는&#x27; 방식으로 바뀌어 개발자들의 비용 부담이 달라질 수 있습니다.</p>
+          <p class="insight">AI 도구의 가격 모델이 구독에서 종량제로 바뀌는 추세가 보이네요. 우리 회사에서 쓰는 AI 서비스들도 비용 효율을 다시 한번 살펴봐야겠단 생각이 듭니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-27" data-brands="" data-type="ai">
+        <div class="entry-num">08</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMigAFBVV95cUxOcW9xdjdiX1hrZHNlRXY1Q2FvZHRKTWU1OU5EWmtNUTRRSnhmbnN0bUVlbXNXZnNyNWFsa2JEdG9mbFpaSFNCR3Q1T0Z3bnRUdU5lcW0tTGJSQlBUODZQWlpySGJhaDI1UGVpc1E5eXgySHRQQXJSRFFzZTh6U25XMg?oc=5" target="_blank" rel="noopener">이제 Mac 환경에서도 제미나이 앱을 만나보세요</a></h2>
+          <div class="byline">blog.google · 04.27 월 · <a href="https://news.google.com/rss/articles/CBMigAFBVV95cUxOcW9xdjdiX1hrZHNlRXY1Q2FvZHRKTWU1OU5EWmtNUTRRSnhmbnN0bUVlbXNXZnNyNWFsa2JEdG9mbFpaSFNCR3Q1T0Z3bnRUdU5lcW0tTGJSQlBUODZQWlpySGJhaDI1UGVpc1E5eXgySHRQQXJSRFFzZTh6U25XMg?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">구글의 AI 어시스턴트 &#x27;제미나이&#x27;가 이제 맥(Mac) 환경에서도 앱으로 사용할 수 있게 되었습니다. 스마트폰뿐 아니라 컴퓨터 환경에서도 AI의 도움을 받을 수 있게 확장된 것입니다.</p>
+          <p class="insight">AI 어시스턴트가 모든 기기에서 자연스럽게 대화하는 시대가 오고 있네요. 우리 일터에서도 맥 사용자들이 점점 늘어나는데, AI가 일하는 방식을 어떻게 바꿀지 궁금합니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-26" data-brands="시디즈" data-type="external">
+        <div class="entry-num">01</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">시디즈</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiswJBVV95cUxPcXhySnNrVkxHamcyVWZNeFhpSkItN2NDODdhcHBGQ2NmYlNzc3VabUJKdXhMaDVnOURfZnM5M3MtV0NyMi1icEhScG5GNTY5aEh1dlZlbWEzbFlrZGlsb0VNRS1FV2tvWVZQdDJqYjdEQmJrcW9RcTFUVk5XTGhnbU1tWmc1V3ZYUE9FcG00d09aQ3NCLTRFUG52WTVRZ2tsaUxZOWxmdzFERnB2dmtSSXZneG85OTdpU2lZSWtfZzU0QkhnWlJXa2tqaWlyUlpRWHhvZkZZM0NmY2wtRTNhRFV3TDc3WkxhVXRrSWFTSno4bHJtVUxsRFpxM0xZU3ZEdnUwWUJHLUJqMV9vZTNlWWQ0TjdDWWZ3VEhNYTJETmZhX1VleFEtZHJfRkl2b0I0NU53?oc=5" target="_blank" rel="noopener">AndaSeat Phantom 4 시리즈 의자 리뷰 2026: 게이머 및 사무용 편안함</a></h2>
+          <div class="byline">games.gg · 04.26 일 · <a href="https://news.google.com/rss/articles/CBMiswJBVV95cUxPcXhySnNrVkxHamcyVWZNeFhpSkItN2NDODdhcHBGQ2NmYlNzc3VabUJKdXhMaDVnOURfZnM5M3MtV0NyMi1icEhScG5GNTY5aEh1dlZlbWEzbFlrZGlsb0VNRS1FV2tvWVZQdDJqYjdEQmJrcW9RcTFUVk5XTGhnbU1tWmc1V3ZYUE9FcG00d09aQ3NCLTRFUG52WTVRZ2tsaUxZOWxmdzFERnB2dmtSSXZneG85OTdpU2lZSWtfZzU0QkhnWlJXa2tqaWlyUlpRWHhvZkZZM0NmY2wtRTNhRFV3TDc3WkxhVXRrSWFTSno4bHJtVUxsRFpxM0xZU3ZEdnUwWUJHLUJqMV9vZTNlWWQ0TjdDWWZ3VEhNYTJETmZhX1VleFEtZHJfRkl2b0I0NU53?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">AndaSeat의 신형 게이밍·사무용 의자 Phantom 4 시리즈가 2026년 출시되며, 허리 지지력과 장시간 앉음 편안함을 강조하고 있습니다. 게이밍과 업무용 의자 시장에서 인체공학 설계가 핵심 경쟁 포인트로 부각되는 중입니다.</p>
+          <p class="insight">게이밍 의자 시장이 생각보다 실업무 사용자까지 흡수하고 있네요. 시디즈도 이 영역에서 &#x27;RGB 없이도 편하다&#x27;는 포지셔닝으로 한번 실험해볼 만할 것 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-26" data-brands="퍼시스,일룸" data-type="external">
+        <div class="entry-num">02</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="brand">퍼시스 · 일룸</span><span class="sep">·</span><span class="imp-high">주목</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMidEFVX3lxTFBNbmRha21ZTGxxN1V4QmdrNHpuekl3cFVJSzJLeHhhbE1mOXc1NHNJUGhEZnd2UktuUExOVE5JZ3RuclhPNk52czh1V3M1VXhOdnkwSlZWbmNhSTFpMnBTdmZNUU9NdUI5U2I5ME9rNGIyZEdU?oc=5" target="_blank" rel="noopener">[판치는 수입산…건설자재 생태계 위기](2) 판유리ㆍ파티클보드ㆍ단열재 수입산 공습…가동률ㆍ수익 ‘동반 추락’</a></h2>
+          <div class="byline">대한경제 · 04.26 일 · <a href="https://news.google.com/rss/articles/CBMidEFVX3lxTFBNbmRha21ZTGxxN1V4QmdrNHpuekl3cFVJSzJLeHhhbE1mOXc1NHNJUGhEZnd2UktuUExOVE5JZ3RuclhPNk52czh1V3M1VXhOdnkwSlZWbmNhSTFpMnBTdmZNUU9NdUI5U2I5ME9rNGIyZEdU?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">수입산 판유리·파티클보드·단열재 가격 하락으로 국내 건설자재 업계가 가동률과 수익성 동시 악화를 겪고 있습니다. 가구 제조의 핵심 원재료 원가 구조가 수입품 초저가 경쟁에 노출된 상황입니다.</p>
+          <p class="insight">MDF, 파티클보드 가격이 떨어지면 단기론으로는 원가 절감이지만, 국내 공급망 약화는 장기적으로 리스크네요. 원가 이득을 어떻게 고객 가치로 전환할지가 관건일 것 같습니다.</p>
+        </div>
+      </article>
+      <article class="entry" data-day="2026-04-26" data-brands="" data-type="ai">
+        <div class="entry-num">03</div>
+        <div class="entry-body">
+          <div class="entry-tags"><span class="type-ai">AI 가이드</span></div>
+          <h2 class="headline"><a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1MYWwtZXdkNG4wMmxxZUc5SjRMQXR2V0RhTXZPR3pjUEM3VzhET3R1RTNMVEZVdEJCSXIyTmdxRlRmZW9XRzVqYlJQeEozX28?oc=5" target="_blank" rel="noopener">&quot;결과만 있고 이유는 없다&quot;...구글 DESIGN.md가 놓친 &#x27;AI 디자인&#x27; 핵심</a></h2>
+          <div class="byline">v.daum.net · 04.26 일 · <a href="https://news.google.com/rss/articles/CBMiT0FVX3lxTE1MYWwtZXdkNG4wMmxxZUc5SjRMQXR2V0RhTXZPR3pjUEM3VzhET3R1RTNMVEZVdEJCSXIyTmdxRlRmZW9XRzVqYlJQeEozX28?oc=5" target="_blank" rel="noopener">원문 보기 →</a></div>
+          <p class="summary">구글의 AI 디자인 도구 &#x27;DESIGN.md&#x27;는 최종 결과물은 빠르게 만들지만, 왜 그런 디자인이 나왔는지 설명할 수 없다는 한계가 지적되고 있습니다. AI가 시각적 결과만 내놓고 의도나 논리를 전달하지 못하는 것이 &#x27;진정한 AI 디자인&#x27;이 되기 위한 과제입니다.</p>
+          <p class="insight">AI가 그림 잘 그려주는 도구에 머물면, 디자이너는 &#x27;왜 이렇게 했는가&#x27;를 설득하는 사람으로 더 중요해질 수도 있겠다는 생각이 드네요.</p>
+        </div>
+      </article>
+    </main>
+
+    <div class="empty hidden" id="empty">선택한 조건에 해당하는 인사이트가 없습니다.</div>
+
+    <footer>
+      외부에서 우리가 다시 봐야 할 것들 · 출처: 구글 뉴스 RSS · 분석: Claude API · 사내 참고용<br>
+      최종 발행: 2026-04-30 01:10 · 원문 저작권은 각 매체에 있습니다.
+    </footer>
+  </div>
+
+<script>
+const STATE = { day: "today", brand: "all", type: "all" };
+
+function applyFilter() {
+  let v = 0;
+  document.querySelectorAll(".entry").forEach(e => {
+    const dm = STATE.day === "all" || e.dataset.day === STATE.day;
+    const brands = (e.dataset.brands || "").split(",").filter(b => b);
+    const bm = STATE.brand === "all" || brands.includes(STATE.brand);
+    const tm = STATE.type === "all" || e.dataset.type === STATE.type;
+    const show = dm && bm && tm;
+    e.style.display = show ? "" : "none";
+    if (show) v++;
+  });
+  document.getElementById("empty").classList.toggle("hidden", v > 0);
+  document.getElementById("vcount").textContent = v + "건";
+}
+
+document.getElementById("day-filter").addEventListener("change", e => {
+  STATE.day = e.target.value;
+  applyFilter();
+});
+document.getElementById("brand-filter").addEventListener("change", e => {
+  STATE.brand = e.target.value;
+  applyFilter();
+});
+document.getElementById("type-filter").addEventListener("change", e => {
+  STATE.type = e.target.value;
+  applyFilter();
+});
+
+applyFilter();
+</script>
+</body>
+</html>
