@@ -1,0 +1,21 @@
+# 중간 산출물 (빌드 시 매번 새로 만들어짐)
+news.json
+_cache_v3/
+__pycache__/
+*.pyc
+
+# 환경 / 시크릿
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 로컬 테스트 출력 (배포 시는 public/에 들어감)
+/index.html
+/run.log
