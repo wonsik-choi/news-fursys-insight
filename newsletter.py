@@ -25,7 +25,7 @@ except ImportError:
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL", "")  # Incoming Webhook URL
-SITE_URL = os.environ.get("FURSYS_INSIGHT_URL", "")  # 사내 호스팅 URL (선택)
+SITE_URL = os.environ.get("FURSYS_INSIGHT_URL", "https://news-fursys-insight.vercel.app/")  # 사내 호스팅 URL (선택)
 MODEL = "claude-haiku-4-5"
 
 KEYWORDS = {
@@ -865,8 +865,15 @@ def send_to_slack(enriched):
         {"type": "context",
          "elements": [{"type": "mrkdwn",
                        "text": f"오늘의 *{len(flat)}가지 인사이트* · 외부 {len(by_type['external'])} / 자사 {len(by_type['internal'])} / AI {len(by_type['ai'])}"}]},
-        {"type": "divider"},
     ]
+    # 맨 위에 사이트 링크
+    if SITE_URL:
+        blocks.append({
+            "type": "section",
+            "text": {"type": "mrkdwn",
+                     "text": f"<{SITE_URL}|*사이트로 이동 →*>  ·  매일 KST 08:00 자동 발행"}
+        })
+    blocks.append({"type": "divider"})
 
     for t in ["internal", "external", "ai"]:
         items = by_type[t]
@@ -893,8 +900,6 @@ def send_to_slack(enriched):
         blocks.append({"type": "divider"})
 
     footer_text = "사내 참고용 · 출처: 구글 뉴스 RSS · 분석: Claude API"
-    if SITE_URL:
-        footer_text = f"<{SITE_URL}|전체 보기> · " + footer_text
     blocks.append({
         "type": "context",
         "elements": [{"type": "mrkdwn", "text": footer_text}]
