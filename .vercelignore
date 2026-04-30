@@ -1,0 +1,18 @@
+# Vercel은 정적 호스팅만 — Python 파이프라인은 GitHub Actions에서 실행됨
+# 이 파일들을 Vercel에서 무시 (자동 Python 프레임워크 감지 방지)
+
+# Python 소스
+*.py
+requirements.txt
+__pycache__/
+_cache_v3/
+
+# 중간 산출물
+news.json
+run.log
+
+# 빌드 워크플로우 (GitHub Actions에서만 사용)
+.github/
+
+# 문서
+DEPLOY.md
