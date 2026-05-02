@@ -118,6 +118,34 @@ ARCHIVE_DIR = OUTPUT_DIR / "archive"
 SITE_PATH = OUTPUT_DIR / "index.html"
 
 
+
+
+def get_seen_urls(days=14, exclude_today=True):
+    """과거 N일치 archive에서 발행된 기사 URL 모음. 중복 발송 방지용."""
+    seen = set()
+    if not ARCHIVE_DIR.exists():
+        return seen
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    cutoff = datetime.now().date() - timedelta(days=days)
+    for f in ARCHIVE_DIR.glob("*.json"):
+        m = re.match(r"(\d{4}-\d{2}-\d{2})\.json$", f.name)
+        if not m: continue
+        date_str = m.group(1)
+        if exclude_today and date_str == today_str:
+            continue
+        try:
+            d = datetime.strptime(date_str, "%Y-%m-%d").date()
+            if d < cutoff: continue
+            data = json.loads(f.read_text(encoding="utf-8"))
+            for cat, arts in data.get("articles", {}).items():
+                for a in arts:
+                    if a.get("link"):
+                        seen.add(a["link"])
+        except Exception:
+            pass
+    return seen
+
+
 # ============================ 1. 뉴스 수집 ============================
 
 def fetch_google_news(keyword, max_items=3):
@@ -172,7 +200,19 @@ def collect_all_news():
             a["matched_keyword"] = kw; a["category"] = cat
             by_category[cat].append(a)
     total = sum(len(v) for v in by_category.values())
-    print(f"   → {total}건", flush=True)
+    print(f"   → {total}건 수집", flush=True)
+
+    # 과거 14일치 발행 기사 제외 (중복 발송 방지)
+    seen = get_seen_urls(days=14, exclude_today=True)
+    if seen:
+        removed = 0
+        for cat in by_category:
+            before = len(by_category[cat])
+            by_category[cat] = [a for a in by_category[cat] if a.get("link") not in seen]
+            removed += before - len(by_category[cat])
+        if removed > 0:
+            print(f"   → 과거 발행 기사 {removed}건 제외 → {sum(len(v) for v in by_category.values())}건 남음", flush=True)
+
     return by_category
 
 
@@ -866,12 +906,21 @@ def send_to_slack(enriched):
          "elements": [{"type": "mrkdwn",
                        "text": f"오늘의 *{len(flat)}가지 인사이트* · 외부 {len(by_type['external'])} / 자사 {len(by_type['internal'])} / AI {len(by_type['ai'])}"}]},
     ]
-    # 맨 위에 사이트 링크
+    # 맨 위에 사이트 링크 — 버튼 블록 (모바일에서도 확실히 보임)
     if SITE_URL:
         blocks.append({
-            "type": "section",
-            "text": {"type": "mrkdwn",
-                     "text": f"<{SITE_URL}|*사이트로 이동 →*>  ·  매일 KST 08:00 자동 발행"}
+            "type": "actions",
+            "elements": [{
+                "type": "button",
+                "text": {"type": "plain_text", "text": "사이트에서 전체 보기", "emoji": False},
+                "url": SITE_URL,
+                "style": "primary"
+            }]
+        })
+        blocks.append({
+            "type": "context",
+            "elements": [{"type": "mrkdwn",
+                          "text": f"매일 KST 08:00 자동 발행 · <{SITE_URL}|{SITE_URL}>"}]
         })
     blocks.append({"type": "divider"})
 
