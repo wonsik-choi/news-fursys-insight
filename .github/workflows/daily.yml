@@ -2,8 +2,8 @@ name: Daily Fursys-Insight Build
 
 on:
   schedule:
-    # 매일 KST 08:00 = UTC 23:00 (전날)
-    - cron: '0 23 * * *'
+    # 매일 KST ~08:00 도착 목표 (UTC 22:20 트리거 → GitHub Actions 지연 30분 + 빌드 6분 ≈ KST 08:00)
+    - cron: '20 22 * * *'
   # 수동 실행 버튼 (GitHub Actions 탭에서)
   workflow_dispatch:
 
