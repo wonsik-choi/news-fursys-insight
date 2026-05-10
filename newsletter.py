@@ -12,6 +12,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
+from email.utils import parsedate_to_datetime
 from html import escape
 from pathlib import Path
 
@@ -111,6 +112,7 @@ MAX_ARTICLES_PER_KEYWORD = 3
 MAX_TOTAL_ARTICLES = 80
 RETENTION_DAYS = 7
 MAX_INSIGHTS_PER_DAY = 20
+FRESHNESS_DAYS = 2  # 최근 N일 이내 발행 기사만 (그 이전은 "오래된 뉴스"로 제외)
 
 # 출력 위치: 환경변수로 override 가능 (Vercel 배포 시 public/ 으로 지정)
 OUTPUT_DIR = Path(os.environ.get("FURSYS_PUBLIC_DIR", str(Path(__file__).parent)))
@@ -212,6 +214,24 @@ def collect_all_news():
             removed += before - len(by_category[cat])
         if removed > 0:
             print(f"   → 과거 발행 기사 {removed}건 제외 → {sum(len(v) for v in by_category.values())}건 남음", flush=True)
+
+    # 신선도 필터 — 최근 FRESHNESS_DAYS일 이내 발행 기사만 (RSS에 들어있는 오래된 기사 제외)
+    cutoff = datetime.now() - timedelta(days=FRESHNESS_DAYS)
+    removed_old = 0
+    for cat in by_category:
+        fresh = []
+        for a in by_category[cat]:
+            try:
+                pub = parsedate_to_datetime(a.get("pub_date", "")).replace(tzinfo=None)
+                if pub >= cutoff:
+                    fresh.append(a)
+                else:
+                    removed_old += 1
+            except Exception:
+                fresh.append(a)  # 파싱 실패 시 안전하게 포함
+        by_category[cat] = fresh
+    if removed_old > 0:
+        print(f"   → {FRESHNESS_DAYS}일 이전 발행 기사 {removed_old}건 제외 → {sum(len(v) for v in by_category.values())}건 남음", flush=True)
 
     return by_category
 
