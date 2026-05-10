@@ -926,21 +926,21 @@ def send_to_slack(enriched):
          "elements": [{"type": "mrkdwn",
                        "text": f"오늘의 *{len(flat)}가지 인사이트* · 외부 {len(by_type['external'])} / 자사 {len(by_type['internal'])} / AI {len(by_type['ai'])}"}]},
     ]
-    # 맨 위에 사이트 링크 — 버튼 블록 (모바일에서도 확실히 보임)
+    # 맨 위에 사이트 링크 — 안전한 mrkdwn (중첩 포맷 없음)
     if SITE_URL:
+        blocks.append({
+            "type": "section",
+            "text": {"type": "mrkdwn",
+                     "text": f"*오늘의 전체 인사이트 →* <{SITE_URL}|{SITE_URL}>"}
+        })
         blocks.append({
             "type": "actions",
             "elements": [{
                 "type": "button",
-                "text": {"type": "plain_text", "text": "사이트에서 전체 보기", "emoji": False},
+                "text": {"type": "plain_text", "text": "사이트에서 전체 보기"},
                 "url": SITE_URL,
                 "style": "primary"
             }]
-        })
-        blocks.append({
-            "type": "context",
-            "elements": [{"type": "mrkdwn",
-                          "text": f"매일 KST 08:00 자동 발행 · <{SITE_URL}|{SITE_URL}>"}]
         })
     blocks.append({"type": "divider"})
 
